@@ -12,15 +12,19 @@ const Dashboard = () => {
   //const [sampletest, setSampletest] = useState('')
 
   let url = ''
+  console.log("userParam", userParam)
   if (userParam) {
     if (userParam.samplePage) {
       url = userParam.samplePage
+    } else if (userParam.gagevuePage) {
+      url = userParam.gagevuePage
     } else if (userParam.test) {
       url = userParam.test
     } else if (userParam.system) {
       url = userParam.system
     }
   }
+  console.log("url", url)
   //if (userParam.samplePage) url=userParam.samplePage
 
   // let sampletest=''
@@ -42,21 +46,21 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <>
-      <div id='dashboard'>
-        <div id='mask'></div>
-        <div id='wrap_area'>
-          <div id='container'>
-            <ul>
-              <li class='lnb'>{<LeftMenu />}</li>
-              <li class='contents'>
-                <div class='content'>{userParam && <Content url={url} />}</div>
-              </li>
-            </ul>
+      <>
+        <div id='dashboard'>
+          <div id='mask'></div>
+          <div id='wrap_area'>
+            <div id='container'>
+              <ul>
+                <li class='lnb'>{<LeftMenu />}</li>
+                <li class='contents'>
+                  <div class='content'>{userParam && <Content url={url} />}</div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import SamplePage1 from '../pages/SamplePage1'
 import FourHundredFour from '../pages/FourHundredFour'
 import SamplePage2 from '../sampletest/samplepage2'
@@ -6,41 +6,45 @@ import Testpage1 from '../test/testpage1'
 import Testpage2 from '../test/testpage2'
 import SamplePage3 from '../sampletest/samplepage3'
 import SamplePage4 from '../sampletest/samplepage4'
-// import SamplePage5 from '../sampletest/samplepage5'
+// import Samplepage5 from '../sampletest/samplepage5'
 // import SamplePage6 from '../sampletest/samplepage6'
 // import SamplePage7 from '../sampletest/samplepage7'
 // import SamplePage8 from '../sampletest/samplepage8'
 // import SamplePage9 from '../sampletest/samplepage9'
 import SamplePage10 from '../sampletest/samplepage10'
-import comnCodMgr from '../system/comnCodMgr'
-import FileSample from '../system/FileSample'
-import VueStudy from '../system/VueStudy'
-import notice from '../system/notice'
+import GagevueCalendar from '../gagevueMain/GagevueCalendar'
 
 const Content = (props) => {
   console.log('Content start')
   const [url, setUrl] = useState()
 
-  console.log(props)
 
+  console.log("props", props)
   let propsUrl = props.url
+  console.log("propsUrl", propsUrl)
 
   let samplePageArr = [
-    <SamplePage1 />,
-    <SamplePage2 />,
-    <SamplePage3 />,
+    <SamplePage1/>,
+    <SamplePage2/>,
+    <SamplePage3/>,
     <SamplePage4 />,
-    // <SamplePage5 />,
+    // <Samplepage5 />,
     // <SamplePage6 />,
     // <SamplePage7 />,
     // <SamplePage8 />,
     // <SamplePage9 />,
-    <SamplePage10 />,
+    <SamplePage10/>,
   ]
 
-  let testMenuArr = [<Testpage1 />, <Testpage2 />]
+  let gagevuePageArr = [
+    <GagevueCalendar/>,
+  ]
 
-  let systemMenuArr = [<notice />, <comnCodMgr />, <FileSample />, <VueStudy />]
+  let testMenuArr = [<Testpage1/>, <Testpage2/>]
+
+  let systemMenuArr = [
+    //  <notice />, <comnCodMgr />, <FileSample />, <VueStudy />
+  ]
 
   const content = () => {
     console.log('content start')
@@ -50,6 +54,8 @@ const Content = (props) => {
     let returnValue = ''
     let flag = false
     // alert(propsUrl)
+    // console.log("propsUrl", propsUrl)
+
     if (propsUrl) {
       if (!(propsUrl.indexOf('samplepage') === -1)) {
         // 연습
@@ -70,23 +76,33 @@ const Content = (props) => {
           // if (!flag) returnValue = <FourHundredFour/>
           // alert(i)
           /*
-                    if ('samplepage' + i === propsUrl) {
-                        i = i - 1
-                        // alert(samplePageName+','+propsUrl)
+          if ('samplepage' + i === propsUrl) {
+              i = i - 1
+              // alert(samplePageName+','+propsUrl)
 
-                        if (samplePageName === propsUrl) {
-                            console.log('여기!!!!!!!!!!!!!!!')
-                            for(let j=0;j<=10;j++) {
-                                returnValue = samplePageArr[i]
-                            }
-                        }
+              if (samplePageName === propsUrl) {
+                  console.log('여기!!!!!!!!!!!!!!!')
+                  for(let j=0;j<=10;j++) {
+                      returnValue = samplePageArr[i]
+                  }
+              }
 
-                        // if (!(typeof returnValue === 'undefined')) flag = true
-                        // break
-                    }
-                    */
+              // if (!(typeof returnValue === 'undefined')) flag = true
+              // break
+          }
+          */
         }
-      } else if (!(propsUrl.indexOf('testpage') === -1)) {
+      } else if(propsUrl.indexOf('Gagevue') > -1) {
+        console.log("gagevuePageArr", gagevuePageArr)
+        // 연습
+        gagevuePageArr.forEach(function(gagevue, idx){
+          console.log("gagevuePageArr.forEach", gagevue.type.name)
+          if(gagevue.type.name === propsUrl){
+            returnValue = gagevue;
+            flag = true;
+          }
+        })
+      }else if (!(propsUrl.indexOf('testpage') === -1)) {
         // 임시
         if ('testpage1' === propsUrl) returnValue = testMenuArr[0]
         else returnValue = testMenuArr[1]
@@ -108,19 +124,19 @@ const Content = (props) => {
     }
 
     // alert(flag+','+returnValue)
-    if (!flag || returnValue === '') returnValue = <FourHundredFour />
+    if (!flag || returnValue === '') returnValue = <FourHundredFour/>
     // console.log('returnValue start')
-    // console.log(returnValue)
+// console.log(returnValue)
     return returnValue
   }
 
   return (
-    <>
-      <div id='content'>
-        {/* {propsUrl} */}
-        <div>{content()}</div>
-      </div>
-    </>
+      <>
+        <div id='content'>
+          {/* {propsUrl} */}
+          <div>{content()}</div>
+        </div>
+      </>
   )
 }
 export default Content

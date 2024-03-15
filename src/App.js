@@ -29,27 +29,32 @@ const App = () => {
     setVisible2(true)
   }, [])
 
-  useEffect(() => {
-    if (crtPath === location.pathname) window.location.reload()
+  // useEffect(() => {
+  //   if (crtPath === location.pathname) window.location.reload()
+  //
+  //   crtPath = location.pathname
+  // }, [location])
 
-    crtPath = location.pathname
-  }, [location])
-  // <Route path='/dashboard/sampletest/:home' element={<SamplePage1 />} />
+  // <Route path='/dashboard/sampletest/:home' element={<SamplePage1_ydh />} />
   return (
-    <>
-      <div id='app'>
-        <Routes>
-          <Route path='/' element={<Login />} />{' '}
-          <Route path='/dashboard/home' element={<Dashboard />} />{' '}
-          <Route
-            path='/dashboard/sampletest/:samplePage'
-            element={<Dashboard />}
-          />{' '}
-          <Route path='/dashboard/test/:test' element={<Dashboard />} />{' '}
-          <Route path='/dashboard/system/:system' element={<Dashboard />} />{' '}
-        </Routes>{' '}
-      </div>{' '}
-    </>
+      <>
+        <div id='app'>
+          <Routes>
+            <Route path='/' element={<Login />} />{' '}
+            <Route path='/dashboard/home' element={<Dashboard />} />{' '}
+            <Route
+                path='/dashboard/sampletest/:samplePage'
+                element={<Dashboard />}
+            />{' '}
+            <Route
+                path='/dashboard/gagevueMain/:gagevuePage'
+                element={<Dashboard />}
+            />{' '}
+            <Route path='/dashboard/test/:test' element={<Dashboard />} />{' '}
+            <Route path='/dashboard/system/:system' element={<Dashboard />} />{' '}
+          </Routes>{' '}
+        </div>{' '}
+      </>
   )
 }
 

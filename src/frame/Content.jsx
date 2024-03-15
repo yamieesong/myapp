@@ -19,9 +19,9 @@ const Content = (props) => {
   const [url, setUrl] = useState()
 
 
-  console.log("props", props)
+  // console.log("props", props)
   let propsUrl = props.url
-  console.log("propsUrl", propsUrl)
+  // console.log("propsUrl", propsUrl)
 
   let samplePageArr = [
     <SamplePage1/>,
@@ -93,10 +93,10 @@ const Content = (props) => {
           */
         }
       } else if(propsUrl.indexOf('Gagevue') > -1) {
-        console.log("gagevuePageArr", gagevuePageArr)
+        // console.log("gagevuePageArr", gagevuePageArr)
         // 연습
         gagevuePageArr.forEach(function(gagevue, idx){
-          console.log("gagevuePageArr.forEach", gagevue.type.name)
+          // console.log("gagevuePageArr.forEach", gagevue.type.name)
           if(gagevue.type.name === propsUrl){
             returnValue = gagevue;
             flag = true;

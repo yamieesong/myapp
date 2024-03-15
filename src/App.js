@@ -50,6 +50,18 @@ const App = () => {
                 path='/dashboard/scm/:gagevuePage'
                 element={<Dashboard />}
             />{' '}
+            <Route
+                path='/dashboard/mypage/:mypage'
+                element={<Dashboard />}
+            />{' '}
+            <Route
+                path='/dashboard/dlm/:dlmPage'
+                element={<Dashboard />}
+            />{' '}
+            <Route
+                path='/dashboard/system/:systemPage'
+                element={<Dashboard />}
+            />{' '}
             <Route path='/dashboard/test/:test' element={<Dashboard />} />{' '}
             <Route path='/dashboard/system/:system' element={<Dashboard />} />{' '}
           </Routes>{' '}

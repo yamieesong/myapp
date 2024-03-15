@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 import LeftMenu from '../frame/leftMenu'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import Content from '../frame/Content'
 
 const Dashboard = () => {
   console.log('Dashboard start')
   const userParam = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
 
   //const [url, setUrl] = useState('')
   //const [sampletest, setSampletest] = useState('')
@@ -18,13 +19,26 @@ const Dashboard = () => {
       url = userParam.samplePage
     } else if (userParam.gagevuePage) {
       url = userParam.gagevuePage
+    } else if (userParam.myPage) {
+      url = userParam.myPage
+    } else if (userParam.dlmPage) {
+      url = userParam.dlmPage
+    } else if (userParam.systemPage) {
+      url = userParam.systemPage
     } else if (userParam.test) {
       url = userParam.test
     } else if (userParam.system) {
       url = userParam.system
     }
   }
+  let splitLoc = location.pathname.split("/");
+  let lastArrNum = splitLoc.length-1
+  if(splitLoc[lastArrNum] === url){
+    url = "/" + splitLoc[lastArrNum-1] + "/" + splitLoc[lastArrNum];
+  }
+
   console.log("url", url)
+
   //if (userParam.samplePage) url=userParam.samplePage
 
   // let sampletest=''

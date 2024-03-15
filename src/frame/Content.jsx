@@ -36,8 +36,15 @@ const Content = (props) => {
     <SamplePage10/>,
   ]
 
-  let gagevuePageArr = [
+  //가게부 메뉴
+  let scmDirPageArr = [
     <UserInfo/>,
+  ]
+  //마이페이지 메뉴
+  let mypageDirPageArr = [
+  ]
+  //관리자 메뉴
+  let systemDirPageArr = [
   ]
 
   let testMenuArr = [<Testpage1/>, <Testpage2/>]
@@ -57,11 +64,26 @@ const Content = (props) => {
     // console.log("propsUrl", propsUrl)
 
     if (propsUrl) {
-      console.log("gagevuePageArr", gagevuePageArr)
-      gagevuePageArr.forEach(function(gagevue, idx){
-        console.log("gagevuePageArr.forEach", gagevue.type.name)
-        if(gagevue.type.name.toLowerCase() === propsUrl){
-          returnValue = gagevue;
+      let splitPropsUrl = propsUrl.split("/");
+      let pageArr = [];
+      //console.log("splitPropsUrl", splitPropsUrl)
+      //가계부 메뉴
+      if(splitPropsUrl[1] === "scm"){
+        pageArr = scmDirPageArr;
+      //마이페이지 메뉴
+      }else if(splitPropsUrl[1] === "mypage"){
+        pageArr = mypageDirPageArr;
+      //관리자 메뉴
+      }else if(splitPropsUrl[1] === "dlm" || splitPropsUrl[1] === "system"){
+        pageArr = systemDirPageArr;
+      }
+
+      //alert(splitPropsUrl[1])
+      //console.log("pageArr", pageArr)
+      pageArr.forEach(function(page, idx){
+        //console.log("pageArr.forEach", page.type.name)
+        if(page.type.name.toLowerCase() === splitPropsUrl[2].toLowerCase()){
+          returnValue = page;
           flag = true;
         }
       })

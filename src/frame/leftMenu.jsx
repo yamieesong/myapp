@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import logo_img from '../images/admin/login/logo_img.png'
+import logo_img from '../images/gagevue_logo.png'
 import Session from 'react-session-api'
 import axios from 'axios'
 import { useNavigate, Link, NavLink } from 'react-router-dom'
@@ -42,17 +42,17 @@ const LeftMenu = () => {
 
   const loginProc = async () => {
     await axios
-      .post(
-        '/loginProc.do',
-        new URLSearchParams({ lgn_Id: 'admin', pwd: 'admin' }),
-      )
-      .then((resp) => {
-        console.log('resp!!!!!!!!!!!!!!')
-        setMenuList(resp.data.usrMnuAtrt)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+        .post(
+            '/loginProc.do',
+            new URLSearchParams({ lgn_Id: 'admin', pwd: 'admin' }),
+        )
+        .then((resp) => {
+          console.log('resp!!!!!!!!!!!!!!')
+          setMenuList(resp.data.usrMnuAtrt)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
   }
 
   useLayoutEffect(() => {
@@ -104,6 +104,7 @@ const LeftMenu = () => {
   let i = -1
   const nodeList = () => {
     console.log('nodeList start')
+    console.log("menuList",menuList)
     i++
     let nodeList = []
     let length = menuList[i].nodeList.length
@@ -114,14 +115,14 @@ const LeftMenu = () => {
         url = url.slice(0, url.length - 3)
       }
       nodeList.push(
-        <li>
-          {<Link to={url}>- {menuList[i].nodeList[j].mnu_nm}</Link>}
-          {
-            // <a href={url}>
-            //   - {menuList[i].nodeList[j].mnu_nm}
-            // </a>
-          }
-        </li>,
+          <li>
+            {<Link to={url}>- {menuList[i].nodeList[j].mnu_nm}</Link>}
+            {
+              // <a href={url}>
+              //   - {menuList[i].nodeList[j].mnu_nm}
+              // </a>
+            }
+          </li>,
       )
     }
     //MNU_URL
@@ -139,52 +140,53 @@ const LeftMenu = () => {
   }
 
   return (
-    <>
-      <h3 class='hidden'>lnb 영역</h3>
-      <div id='lnb_area'>
-        <div class='logo'>
-          <div id='header'>
-            <a class='logo'>
-              <img id='logoImg' src={logo_img} />
+      <>
+        <h3 class='hidden'>lnb 영역</h3>
+        <div id='lnb_area'>
+          <div class='logo'>
+            <div id='header'>
+              <a class='logo' href={"/dashboard/home"}>
+                <img id='logoImg' src={logo_img} />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class='login'>
+          <span class='LoginName'>{loginId}</span>
+          <div class='btn_loginArea'>
+            <a class='logout' onClick={logoutproc} name='modal'>
+              <span>LOGOUT</span>
             </a>
           </div>
         </div>
-      </div>
-      <div class='login'>
-        <span class='LoginName'>{loginId}</span>
-        <div class='btn_loginArea'>
-          <a class='logout' onClick={logoutproc} name='modal'>
-            <span>LOGOUT</span>
-          </a>
-        </div>
-      </div>
-      <div></div>
-      <ul class='lnbMenu'>
-        {menuList.map((list, index) => {
-          let aName = 'a' + index
-          let ddName = 'dd' + index
-          return (
-            <li key={index}>
-              <dl>
-                <dt>
-                  <a
-                    onClick={aClick}
-                    name={aName}
-                    href='#'
-                    class='lnbBtn menu005'
-                  >
-                    {list.mnu_nm}
-                  </a>
-                </dt>
-                <dd style={{ display: 'none' }} name={ddName}>
-                  {nodeList()}
-                </dd>
-              </dl>
-            </li>
-          )
-        })}
-      </ul>
-    </>
+        <div></div>
+        <ul class='lnbMenu'>
+          {menuList.map((list, index) => {
+            let aName = 'a' + index
+            let ddName = 'dd' + index
+            return (
+                <li key={index}>
+                  <dl>
+                    <dt>
+                      <a
+                          onClick={aClick}
+                          name={aName}
+                          href='#'
+                          class='lnbBtn menu005'
+                          key={index}
+                      >
+                        {list.mnu_nm}
+                      </a>
+                    </dt>
+                    <dd style={{ display: 'none' }} name={ddName}>
+                      {nodeList()}
+                    </dd>
+                  </dl>
+                </li>
+            )
+          })}
+        </ul>
+      </>
   )
 }
 export default LeftMenu

@@ -13,6 +13,7 @@ import SamplePage4 from '../sampletest/samplepage4'
 // import SamplePage9 from '../sampletest/samplepage9'
 import SamplePage10 from '../sampletest/samplepage10'
 import UserInfo from '../scm/UserInfo'
+import ExpendStatistics from '../mypage/ExpendStatistics'
 
 const Content = (props) => {
   console.log('Content start')
@@ -42,6 +43,7 @@ const Content = (props) => {
   ]
   //마이페이지 메뉴
   let mypageDirPageArr = [
+      <ExpendStatistics/>
   ]
   //관리자 메뉴
   let systemDirPageArr = [
@@ -78,8 +80,8 @@ const Content = (props) => {
         pageArr = systemDirPageArr;
       }
 
-      //alert(splitPropsUrl[1])
-      //console.log("pageArr", pageArr)
+      alert(splitPropsUrl[1])
+      console.log("pageArr", pageArr)
       pageArr.forEach(function(page, idx){
         //console.log("pageArr.forEach", page.type.name)
         if(page.type.name.toLowerCase() === splitPropsUrl[2].toLowerCase()){

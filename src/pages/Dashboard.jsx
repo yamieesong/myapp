@@ -19,8 +19,8 @@ const Dashboard = () => {
       url = userParam.samplePage
     } else if (userParam.gagevuePage) {
       url = userParam.gagevuePage
-    } else if (userParam.myPage) {
-      url = userParam.myPage
+    } else if (userParam.mypage) {
+      url = userParam.mypage
     } else if (userParam.dlmPage) {
       url = userParam.dlmPage
     } else if (userParam.systemPage) {
@@ -33,11 +33,17 @@ const Dashboard = () => {
   }
   let splitLoc = location.pathname.split("/");
   let lastArrNum = splitLoc.length-1
-  if(splitLoc[lastArrNum] === url){
+  console.log("Dashboard splitLoc", splitLoc, lastArrNum)
+  console.log("splitLoc[lastArrNum].toLowerCase()", splitLoc[lastArrNum].toLowerCase())
+  console.log("url.toLowerCase()", url.toLowerCase())
+  console.log("splitLoc[lastArrNum].toLowerCase() === url.toLowerCase()", splitLoc[lastArrNum].toLowerCase() === url.toLowerCase())
+  // alert(splitLoc[lastArrNum])
+  // alert(url)
+  if(splitLoc[lastArrNum].toLowerCase() === url.toLowerCase()){
     url = "/" + splitLoc[lastArrNum-1] + "/" + splitLoc[lastArrNum];
   }
 
-  console.log("url", url)
+  console.log("Dashboard url", url)
 
   //if (userParam.samplePage) url=userParam.samplePage
 

@@ -1,0 +1,31 @@
+a:hover {
+  color: gold;
+}
+
+tr.row:hover {
+  background-color: gold;
+}
+
+.samplePageTable {
+  border-collapse: collapse;
+  border: 1px #50bcdf;
+  width: 100%;
+}
+
+.samplePageTable2 {
+  border: 0px;
+  border-color: blue;
+}
+
+.samplePageTable3 {
+  font-size: 100%;
+  text-align: left;
+}
+
+.samplePageSelect1 {
+  width: 150px;
+}
+
+.samplePageInput1 {
+  width: 55%;
+}

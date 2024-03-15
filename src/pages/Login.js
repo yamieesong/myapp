@@ -142,9 +142,10 @@ const Login = () => {
                 <span class='id_save'> ID저장 </span>{' '}
               </p>{' '}
               <div>
-                <a href='' id='RegisterBtn' name='modal'>
-                  <strong> [회원가입] </strong>{' '}
-                </a>{' '}
+                  <Link to='/Register'>[[[회원가입ㄱㄱ]]]</Link>
+                {/*<a href='' id='RegisterBtn' name='modal'>*/}
+                {/*  <strong> [회원가입] </strong>{' '}*/}
+                {/*</a>{' '}*/}
                 <a href=''>
                   <strong> [아이디 / 비밀번호 찾기] </strong>{' '}
                 </a>{' '}

@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Register from "./login/Register";
 
 let crtPath = ''
 
@@ -64,6 +65,8 @@ const App = () => {
             />{' '}
             <Route path='/dashboard/test/:test' element={<Dashboard />} />{' '}
             <Route path='/dashboard/system/:system' element={<Dashboard />} />{' '}
+
+            <Route path='/Register' element={<Register/>}/>
           </Routes>{' '}
         </div>{' '}
       </>

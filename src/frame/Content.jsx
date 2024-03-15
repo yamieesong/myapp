@@ -80,7 +80,7 @@ const Content = (props) => {
         pageArr = systemDirPageArr;
       }
 
-      alert(splitPropsUrl[1])
+      // alert(splitPropsUrl[1])
       console.log("pageArr", pageArr)
       pageArr.forEach(function(page, idx){
         //console.log("pageArr.forEach", page.type.name)

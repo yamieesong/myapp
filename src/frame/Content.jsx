@@ -12,16 +12,16 @@ import SamplePage4 from '../sampletest/samplepage4'
 // import SamplePage8 from '../sampletest/samplepage8'
 // import SamplePage9 from '../sampletest/samplepage9'
 import SamplePage10 from '../sampletest/samplepage10'
-import GagevueCalendar from '../gagevueMain/GagevueCalendar'
+import UserInfo from '../scm/UserInfo'
 
 const Content = (props) => {
   console.log('Content start')
   const [url, setUrl] = useState()
 
 
-  // console.log("props", props)
+  console.log("props", props)
   let propsUrl = props.url
-  // console.log("propsUrl", propsUrl)
+  console.log("propsUrl", propsUrl)
 
   let samplePageArr = [
     <SamplePage1/>,
@@ -37,7 +37,7 @@ const Content = (props) => {
   ]
 
   let gagevuePageArr = [
-    <GagevueCalendar/>,
+    <UserInfo/>,
   ]
 
   let testMenuArr = [<Testpage1/>, <Testpage2/>]
@@ -57,76 +57,16 @@ const Content = (props) => {
     // console.log("propsUrl", propsUrl)
 
     if (propsUrl) {
-      if (!(propsUrl.indexOf('samplepage') === -1)) {
-        // 연습
-        for (let i = 0; i < 10; i++) {
-          // alert(i)
-          // console.log(i)
-          let samplePageName = ''
-          if (!(undefined === samplePageArr[i])) {
-            samplePageName = samplePageArr[i].type.name.toLowerCase()
-          }
-          if (samplePageName === propsUrl) {
-            // alert('안타야됨')
-            returnValue = samplePageArr[i]
-            // if (!(typeof returnValue === 'undefined'))
-            flag = true
-            break
-          }
-          // if (!flag) returnValue = <FourHundredFour/>
-          // alert(i)
-          /*
-          if ('samplepage' + i === propsUrl) {
-              i = i - 1
-              // alert(samplePageName+','+propsUrl)
-
-              if (samplePageName === propsUrl) {
-                  console.log('여기!!!!!!!!!!!!!!!')
-                  for(let j=0;j<=10;j++) {
-                      returnValue = samplePageArr[i]
-                  }
-              }
-
-              // if (!(typeof returnValue === 'undefined')) flag = true
-              // break
-          }
-          */
+      console.log("gagevuePageArr", gagevuePageArr)
+      gagevuePageArr.forEach(function(gagevue, idx){
+        console.log("gagevuePageArr.forEach", gagevue.type.name)
+        if(gagevue.type.name.toLowerCase() === propsUrl){
+          returnValue = gagevue;
+          flag = true;
         }
-      } else if(propsUrl.indexOf('Gagevue') > -1) {
-        // console.log("gagevuePageArr", gagevuePageArr)
-        // 연습
-        gagevuePageArr.forEach(function(gagevue, idx){
-          // console.log("gagevuePageArr.forEach", gagevue.type.name)
-          if(gagevue.type.name === propsUrl){
-            returnValue = gagevue;
-            flag = true;
-          }
-        })
-      }else if (!(propsUrl.indexOf('testpage') === -1)) {
-        // 임시
-        if ('testpage1' === propsUrl) returnValue = testMenuArr[0]
-        else returnValue = testMenuArr[1]
-
-        if (!(typeof returnValue === 'undefined')) flag = true
-      } else {
-        // 시스템관리
-        if ('notice' === propsUrl) {
-          returnValue = systemMenuArr[0]
-        } else if ('comnCodMgr' === propsUrl) {
-          returnValue = systemMenuArr[1]
-        } else if ('FileSample' === propsUrl) {
-          returnValue = systemMenuArr[2]
-        } else if ('VueStudy' === propsUrl) {
-          returnValue = systemMenuArr[3]
-        }
-        if (!(typeof returnValue === 'undefined')) flag = true
-      }
+      })
     }
 
-    // alert(flag+','+returnValue)
-    if (!flag || returnValue === '') returnValue = <FourHundredFour/>
-    // console.log('returnValue start')
-// console.log(returnValue)
     return returnValue
   }
 

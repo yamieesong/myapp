@@ -3,7 +3,7 @@ import { formatDate } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-const GagevueCalendar = () => {
+const UserInfo = () => {
     const [weekendsVisible, setWeekendsVisible] = useState(true)
     const [currentEvents, setCurrentEvents] = useState([])
 
@@ -138,4 +138,4 @@ const GagevueCalendar = () => {
     )
 }
 
-export default GagevueCalendar
+export default UserInfo

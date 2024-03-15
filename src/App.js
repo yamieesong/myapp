@@ -47,7 +47,7 @@ const App = () => {
                 element={<Dashboard />}
             />{' '}
             <Route
-                path='/dashboard/gagevueMain/:gagevuePage'
+                path='/dashboard/scm/:gagevuePage'
                 element={<Dashboard />}
             />{' '}
             <Route path='/dashboard/test/:test' element={<Dashboard />} />{' '}

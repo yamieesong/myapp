@@ -1,7 +1,9 @@
 import './Register.css';
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
+import navLink from "./JoinNavLink";
+import JoinNavLink from "./JoinNavLink";
 // import testImg from './testImg.jpg'
 
 const Register = () => {
@@ -142,50 +144,49 @@ const Register = () => {
 
     return (
         <>
-            <div id="Register" style={{margin: '200px'}}>
-                {/*<img src={testImg}/>*/}
-                <p><span>아이디</span><input placeholder='아이디' type='text' ref={idRef} onChange={(e) => {
-                    setId(e.target.value)
-                }}/>
-                    <button onClick={idCheck}>중복체크</button>
-                </p>
-                <p><span>비번</span><input type='text' ref={pwRef} onChange={pwonChage}/>
-                    {visible ? <span id="pwCheck1">비번일치</span> : <span id="pwCheck2">비번불일치</span>}</p>
-                <p><span>비번확인</span><input type='text' ref={pw2Ref} onChange={pw2onChage}/></p>
-                <p><span>이름</span><input type='text' onChange={(e) => {
-                    setName(e.target.value)
-                }}/></p>
-                <p><span>휴대폰번호</span><input type='text' onChange={(e) => {
-                    setCellNum(e.target.value)
-                }} maxLength='13'/></p>
-                <p><span>메일주소</span><input type='text' onChange={(e) => {
-                    setMail1(e.target.value)
-                }}/>{' '}@{' '}<input type='text' onChange={(e) => {
-                    setMail2(e.target.value)
-                }}/></p>
-                <p><span>목표관리 알림 수신 여부 |</span>
-                    <span>동의 </span><input type='text' onChange={(e) => {
-                        // alert(e.target.value)
-                        setRadio(e.target.value)
-                    }} type='radio' value='Y' checked={radio === 'Y'}/>
-                    <span>미동의</span><input type='text' onChange={(e) => {
-                        alert(e.target.value)
-                        setRadio(e.target.value)
-                    }} type='radio' value='N' checked={radio === 'N'}/></p>
-                <hr/>
-                <p style={{margin: '10px'}}><span>재정 관리를 위해 [목표관리] 기능을 활용해보세요. 설정한 목표 금액의 70% 도달 시 메일로 알려드립니다.</span>
-                </p>
-                <p style={{margin: '10px'}}><span>(지출목표 알림 %는 가입 시 70%가 기본값으로 설정되며, 마이페이지를 통해 수정하실 수 있습니다.)</span></p>
-                <hr/>
-                <p><input ref={chk1} type='checkbox'/><span>이용약관 동의 (보기)</span></p>
-                <p><input ref={chk2} type='checkbox'/><span>개인정보 수집 이용 동의 (보기)</span></p>
-                <p><input ref={chk3} type='checkbox'/><span>만 14세 이상입니다.</span></p>
-                <hr/>
-                <p>
-                    <button onClick={join}>가입</button>
-                    <button onClick={valueCheckTest}>값체크용</button>
-                </p>
-            </div>
+            {/*<JoinNavLink/>*/}
+            {/*<img src={testImg}/>*/}
+            <p><span>아이디</span><input placeholder='아이디' type='text' ref={idRef} onChange={(e) => {
+                setId(e.target.value)
+            }}/>
+                <button onClick={idCheck}>중복체크</button>
+            </p>
+            <p><span>비번</span><input type='text' ref={pwRef} onChange={pwonChage}/>
+                {visible ? <span id="pwCheck1">비번일치</span> : <span id="pwCheck2">비번불일치</span>}</p>
+            <p><span>비번확인</span><input type='text' ref={pw2Ref} onChange={pw2onChage}/></p>
+            <p><span>이름</span><input type='text' onChange={(e) => {
+                setName(e.target.value)
+            }}/></p>
+            <p><span>휴대폰번호</span><input type='text' onChange={(e) => {
+                setCellNum(e.target.value)
+            }} maxLength='13'/></p>
+            <p><span>메일주소</span><input type='text' onChange={(e) => {
+                setMail1(e.target.value)
+            }}/>{' '}@{' '}<input type='text' onChange={(e) => {
+                setMail2(e.target.value)
+            }}/></p>
+            <p><span>목표관리 알림 수신 여부 |</span>
+                <span>동의 </span><input type='text' onChange={(e) => {
+                    // alert(e.target.value)
+                    setRadio(e.target.value)
+                }} type='radio' value='Y' checked={radio === 'Y'}/>
+                <span>미동의</span><input type='text' onChange={(e) => {
+                    alert(e.target.value)
+                    setRadio(e.target.value)
+                }} type='radio' value='N' checked={radio === 'N'}/></p>
+            <hr/>
+            <p style={{margin: '10px'}}><span>재정 관리를 위해 [목표관리] 기능을 활용해보세요. 설정한 목표 금액의 70% 도달 시 메일로 알려드립니다.</span>
+            </p>
+            <p style={{margin: '10px'}}><span>(지출목표 알림 %는 가입 시 70%가 기본값으로 설정되며, 마이페이지를 통해 수정하실 수 있습니다.)</span></p>
+            <hr/>
+            <p><input ref={chk1} type='checkbox'/><span>이용약관 동의 (보기)</span></p>
+            <p><input ref={chk2} type='checkbox'/><span>개인정보 수집 이용 동의 (보기)</span></p>
+            <p><input ref={chk3} type='checkbox'/><span>만 14세 이상입니다.</span></p>
+            <hr/>
+            <p>
+                <button onClick={join}>가입</button>
+                <button onClick={valueCheckTest}>값체크용</button>
+            </p>
         </>
     )
 }

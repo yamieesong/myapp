@@ -33,7 +33,7 @@
 }
 
 #Register > hr {
-    margin: 10px;
+    margin: 10px 0px;
 }
 
 #pwCheck1 {
@@ -42,4 +42,12 @@
 
 #pwCheck2 {
     color: red;
+}
+
+#Register > span > a {
+    font-size: 1.5em;
+}
+
+#Register > span > a:hover {
+    font-size: 1.6em;
 }

@@ -156,13 +156,13 @@ const LeftMenu = () => {
                     </div>
                 </div>
             </div>
-            <div class='login'>
-                <span class='LoginName'>{userInfo.loginId}</span>
-                <div class='btn_loginArea'>
-                    <a class='logout' onClick={logoutproc} name='modal'>
-                        <span>LOGOUT</span>
-                    </a>
-                </div>
+            <div style={{padding: '10px'}} class='login'>
+                <p>{userInfo.loginId} 님 접속중 | <a className='logout' onClick={logoutproc} name='modal'>LOGOUT</a></p>
+                {/*<p style={{marginTop: '10px'}}>*/}
+                {/*<a class='logout' onClick={logoutproc} name='modal'>*/}
+                {/*        <span>LOGOUT</span>*/}
+                {/*    </a>*/}
+                {/*</p>*/}
             </div>
             <div></div>
             <ul class='lnbMenu'>

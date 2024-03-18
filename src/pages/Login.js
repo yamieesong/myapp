@@ -6,6 +6,7 @@ import Session from 'react-session-api'
 import logo_img from '../images/admin/login/logo_img.png'
 import {useDispatch, useSelector} from "react-redux";
 import {loginProc} from "../redux/loginSlice";
+// import CryptoJS from 'crypto-js'
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -114,6 +115,33 @@ const Login = () => {
         dispatch(loginProc({id: idRef.current.value, pw: pwRef.current.value}))
     }
 
+    /*
+    const testEncryption = () => {
+        const user = {
+            name: '테스트이름',
+            phone: '01012345678',
+            birthday: '19000101'
+        }
+        // alert(JSON.stringify(user))
+        // alert('암')
+        const testKey = CryptoJS.lib.WordArray.random(32).toString()
+        const testArr = []
+        for (let i = 0; i < 10; i++) {
+            testArr.push(CryptoJS.lib.WordArray.random(32).toString())
+            // console.log(testKey)
+        }
+        console.log(testArr)
+//JSON.stringify(user),testKey)
+        console.log('testKey', testKey)
+        const hash = CryptoJS.AES.encrypt('123', testKey).toString()
+        console.log('암호화', hash)
+        const bytes = CryptoJS.AES.decrypt(hash, testKey)
+        console.log('복호화', JSON.parse(bytes.toString(CryptoJS.enc.Utf8)))
+    }
+    const testDecryption = () => {
+        alert('복')
+    }
+*/
     return (
         <>
             <div id='background_board'>
@@ -168,15 +196,19 @@ const Login = () => {
                                 <span style={{marginRight: "40px"}} class='id_save'> ID저장 </span>
                                 <Link to='/'><b>아이디 찾기</b></Link>{' '}|{' '}
                                 <Link to='/'><b>비밀번호 찾기</b></Link>{' '}|{' '}
-                                <Link to='/Register'><b>회원가입</b></Link>
+                                <Link to='/join/join'><b>회원가입</b></Link>
                             </p>
                             <a className='btn_login' id='btn_login' onClick={login}>
                                 <strong> Login </strong>
                             </a>
                         </fieldset>
-                        {/*<button type='button' onClick={login} style={{marginTop: '200px', width: '300px'}}>*/}
-                        {/*    리덕스 로그인 테스트*/}
-                        {/*</button>*/}
+                        <div id="testArea" style={{marginTop: '200px'}}>
+                            {/*<button type='button' onClick={testEncryption}>암호화테스트</button>*/}
+                            {/*<button type='button' onClick={testDecryption}>복호화테스트</button>*/}
+                            {/*<button type='button' onClick={login} style={{marginTop: '200px', width: '300px'}}>*/}
+                            {/*    리덕스 로그인 테스트*/}
+                            {/*</button>*/}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,45 @@
-td {
-    padding: 5px;
+#Register {
+    /*background-image: url('./testImg.jpg');*/
+}
+
+#Register > p > span {
+    font-family: D2Coding;
+    margin: 5px;
+    font-size: 2em;
+}
+
+#Register > p > input[type=text] {
+    margin: 5px;
+    width: 300px;
+    height: 30px;
+}
+
+#Register > p > input[type=radio] {
+    zoom: 2;
+}
+
+#Register > p > input[type=checkbox] {
+    zoom: 2;
+}
+
+#Register > p > input[type=text]:focus {
+    background: gold;
+    font-size: 1.5em;
+}
+
+#Register > p > button {
+    width: 100px;
+    height: 30px;
+}
+
+#Register > hr {
+    margin: 10px;
+}
+
+#pwCheck1 {
+    color: blue;
+}
+
+#pwCheck2 {
+    color: red;
 }

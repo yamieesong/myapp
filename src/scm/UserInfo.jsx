@@ -115,16 +115,23 @@ const UserInfo = () => {
     }
     const setGagevueData = async (calendar) => {
         openModal();
-        // console.log("calendar", calendar.event)
-        setCalendar(calendar)
-        setMn_dtm(calendar.startStr)
+        if(curMenu === "calendar"){
+            // console.log("calendar", calendar.event)
+            setCalendar(calendar)
+            setMn_dtm(calendar.startStr)
 
-        if(typeof calendar.event === "undefined"){
-            setAction("INSERT")
-        }else{
+            if(typeof calendar.event === "undefined"){
+                setAction("INSERT")
+            }else{
+                setAction("UPDATE")
+                // alert(calendar.event._def.publicId)
+                selectedData(calendar.event._def.publicId)
+            }
+        }else if(curMenu === "list"){
+            let mn_no = calendar;
+            // alert(mn_no)
             setAction("UPDATE")
-            // alert(calendar.event._def.publicId)
-            selectedData(calendar.event._def.publicId)
+            selectedData(mn_no)
         }
     }
     const renderData = (calendar) => {
@@ -151,9 +158,18 @@ const UserInfo = () => {
         }
     }
     const dispListData = (info) => {
-        // console.log("info.gagevueList", info.gagevueList)
+        //console.log("info.gagevueList", info.gagevueList)
         dispListDataList(info.gagevueList)
         setListTotalCnt(info.gagevueListCnt)
+        /*
+        let tmpList = info.gagevueList;
+        console.log("tmpList", tmpList)
+        tmpList.forEach(function(data, idx){
+            if(idx === 0 || data.mn_dtm !== tmpList[idx - 1].mn_dtm){
+               console.log(idx, data.mn_dtm)
+            }
+        })
+        */
     }
 
     const getCodeList = async () => {
@@ -365,7 +381,7 @@ const UserInfo = () => {
             {curMenu === "list" &&
                 <div
                     className="gagevueList"
-                    style={{overflow: "scroll;", width: "100 %;", height: "500px;"}}
+                    style={{overflow: "scroll", width: "100 %", height: "500px"}}
                 >
                     <table
                         className="col"
@@ -373,7 +389,7 @@ const UserInfo = () => {
                         width="75%"
                         cellPadding="5"
                         align="center"
-                        style={{borderCollapse: "collapse;", border: "1px rgb(22, 22, 22);"}}
+                        style={{borderCollapse: "collapse", border: "1px rgb(22, 22, 22)", marginTop: "20px"}}
                     >
                         {listTotalCnt === 0 &&
                             <>
@@ -391,25 +407,78 @@ const UserInfo = () => {
                         }
                         {listTotalCnt > 0 &&
                             <>
-                                {listDataList.map((item, index) => {
-                                    return (
-                                        <tbody key={item.mn_no}>
-                                            <tr align="left" style={{border: "1px;", borderColor: "rgb(22, 22, 22)"}}>
-                                                <th scope="col" colSpan="4">
-                                                    <span
-                                                        style={{marginRight: "10px;", fontSize: "large;", color: "black"}}>
-                                                        날짜 : {item.mn_dtm}
+                                {listDataList.map((item, idx) => {
+                                     // return (idx === (listDataList.length-1) || item.mn_dtm !== listDataList[idx+1].mn_dtm) &&
+                                     return (
+
+                                         <tbody key={item.mn_no}>
+                                             {(idx === 0 || item.mn_dtm !== listDataList[idx - 1].mn_dtm) &&
+                                             <tr align="left" style={{border: "1px", borderColor: "rgb(22, 22, 22)"}}>
+                                                 <th scope="col" colSpan="4" style={{backgroundColor: "skyblue", padding: "10px"}}>
+                                                     <span style={{
+                                                         fontSize: "large",
+                                                         color: "black",
+                                                         marginRight: "10px"
+                                                     }}>
+                                                     {idx}날짜 : {item.mn_dtm}
+                                                     </span>
+                                                     &nbsp;
+                                                     <span style={{marginRight: "10px", color: "blue"}}>
+                                                        수입 : {threeComma(item.sum_for_use_dvs_import_sum)}
+                                                     </span>
+                                                     &nbsp;
+                                                     <span style={{marginRight: "10px", color: "red"}}>
+                                                        지출 : {threeComma(item.sum_for_use_dvs_expense_sum)}
+                                                     </span>
+                                                 </th>
+                                             </tr>
+                                             }
+                                             {/*/!**/}
+                                             <tr align="left" onClick={(e) => {setGagevueData(item.mn_no)}}>
+                                                 <td rowspan="3" style={{fontSize: "18px"}}>
+                                                     <span>{item.mn_use_memo}</span>
+                                                 </td>
+                                                 {item.mn_use_dvs === "1" &&
+                                                 <td align="right">
+                                                    <span style={{color: "red"}}>
+                                                        {item.mn_pay_dvs === "1" &&
+                                                          <span>
+                                                              카드 :&nbsp;
+                                                          </span>
+                                                        }
+                                                        {item.mn_pay_dvs === "2" &&
+                                                            <span>
+                                                                현금 :&nbsp;
+                                                            </span>
+                                                        }
+                                                        {item.mn_amount}
                                                     </span>
-                                                    <span style={{marginRight: "10px;", color: "blue"}}>
-                                                        수입 : { threeComma(item.sum_for_use_dvs_import_sum) }
+                                                 </td>
+                                             }
+                                             {item.mn_use_dvs === "2" &&
+                                                 <td align="right">
+                                                    <span style={{color: "blue"}}>
+                                                        {item.mn_pay_dvs === "1" &&
+                                                          <span>
+                                                              카드 :&nbsp;
+                                                          </span>
+                                                        }
+                                                        {item.mn_pay_dvs === "2" &&
+                                                            <span>
+                                                                현금 :&nbsp;
+                                                            </span>
+                                                        }
+                                                        {item.mn_amount}
                                                     </span>
-                                                    <span style={{marginRight: "10px;", color: "red"}}>
-                                                        지출 : { threeComma(item.sum_for_use_dvs_expense_sum) }
-                                                    </span>
-                                                </th>
-                                            </tr>
-                                        </tbody>
-                                    );
+                                                 </td>
+                                             }
+                                             </tr>
+                                             <tr align="right">
+                                                 <td align="left">{item.mn_use_dvs_det_name}</td>
+                                             </tr>
+                                             {/**!/*/}
+                                         </tbody>
+                                     );
                                 })}
                             </>
                         }

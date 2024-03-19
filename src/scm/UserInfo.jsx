@@ -230,7 +230,7 @@ const UserInfo = () => {
         params.append("mn_use_dvs", mn_use_dvs);
         params.append("mn_use_dvs_det", mn_use_dvs_det);
         params.append("mn_pay_dvs", mn_pay_dvs);
-        params.append("mn_amount", mn_amount);
+        params.append("mn_amount", mn_amount.replaceAll(",", ""));
         params.append("loginID", userInfo.loginId);
         params.append("action", type);
         params.append("mn_rgst_id", userInfo.loginId);

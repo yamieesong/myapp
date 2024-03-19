@@ -27,6 +27,9 @@ const Register = () => {
     const [mail1, setMail1] = useState()
     const [mail2, setMail2] = useState()
     const [radio, setRadio] = useState('N')
+
+    const [pwDisplay, setPwDisplay] = useState(true)
+    const [pwMsg, setPwMsg] = useState(false)
     // const [chk1, setChk1] = useState('N')
     // const [chk2, setChk2] = useState('N')
     // const [chk3, setChk3] = useState('N')
@@ -142,6 +145,37 @@ const Register = () => {
         console.log('chk3', chk3.current.checked);
     }
 
+    const pwShow = () => {
+        setPwDisplay(false)
+        pwRef.current.type = 'password'
+    }
+
+    const pwHide = () => {
+        setPwDisplay(true)
+        pwRef.current.type = 'text'
+    }
+
+    const pwOnBlur = () => {
+        console.log('pwOnBlur')
+        // alert('pwOnBlur')
+        const pw = pwRef.current.value;
+        if (8 > pw.length) {
+            setPwMsg(true)
+            // alert('8~20자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.')
+            pwRef.current.focus()
+        } else {
+            setPwMsg(false)
+            // pw2Ref.current.focus()
+        }
+    }
+
+    const allChk = () => {
+        // console.log('allChk!!!')
+        chk1.current.checked = !chk1.current.checked;
+        chk2.current.checked = !chk2.current.checked;
+        chk3.current.checked = !chk3.current.checked;
+    }
+
     return (
         <>
             {/*<JoinNavLink/>*/}
@@ -151,9 +185,12 @@ const Register = () => {
             }}/>
                 <button onClick={idCheck}>중복체크</button>
             </p>
-            <p><span>비번</span><input type='text' ref={pwRef} onChange={pwonChage}/>
+            <p><span>비번</span><input onBlur={pwOnBlur} maxLength='20' type='text' ref={pwRef} onChange={pwonChage}/>
+                {pwDisplay ? <button type='button' onClick={pwShow}>비번보임</button> :
+                    <button type='button' onClick={pwHide}>비번안보임</button>}
                 {visible ? <span id="pwCheck1">비번일치</span> : <span id="pwCheck2">비번불일치</span>}</p>
-            <p><span>비번확인</span><input type='text' ref={pw2Ref} onChange={pw2onChage}/></p>
+            <p><span>비번확인</span><input maxLength='20' type='text' ref={pw2Ref} onChange={pw2onChage}/></p>
+            <p>{pwMsg ? <b>8~20자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.</b> : ''}</p>
             <p><span>이름</span><input type='text' onChange={(e) => {
                 setName(e.target.value)
             }}/></p>
@@ -179,6 +216,8 @@ const Register = () => {
             </p>
             <p style={{margin: '10px'}}><span>(지출목표 알림 %는 가입 시 70%가 기본값으로 설정되며, 마이페이지를 통해 수정하실 수 있습니다.)</span></p>
             <hr/>
+            <p><input onChange={allChk} type='checkbox'/><span><b>모두동의</b></span></p>
+            {/*checked={chk1State}*/}
             <p><input ref={chk1} type='checkbox'/><span>이용약관 동의 (보기)</span></p>
             <p><input ref={chk2} type='checkbox'/><span>개인정보 수집 이용 동의 (보기)</span></p>
             <p><input ref={chk3} type='checkbox'/><span>만 14세 이상입니다.</span></p>

@@ -44,9 +44,7 @@ const Login = () => {
     }
 
     const onKeyDown = (e) => {
-        if (e.key === 'Enter') {
-            fLoginProc()
-        }
+        if (e.key === 'Enter') login()
     }
 
     //input에 입력될 때마다 account state값 변경되게 하는 함수

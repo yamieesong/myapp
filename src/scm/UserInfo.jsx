@@ -420,7 +420,7 @@ const UserInfo = () => {
                                                          color: "black",
                                                          marginRight: "10px"
                                                      }}>
-                                                     {idx}날짜 : {item.mn_dtm}
+                                                     {item.mn_dtm}
                                                      </span>
                                                      &nbsp;
                                                      <span style={{marginRight: "10px", color: "blue"}}>
@@ -451,7 +451,7 @@ const UserInfo = () => {
                                                                 현금 :&nbsp;
                                                             </span>
                                                         }
-                                                        {item.mn_amount}
+                                                        {threeComma(item.mn_amount)}
                                                     </span>
                                                  </td>
                                              }
@@ -468,7 +468,7 @@ const UserInfo = () => {
                                                                 현금 :&nbsp;
                                                             </span>
                                                         }
-                                                        {item.mn_amount}
+                                                        {threeComma(item.mn_amount)}
                                                     </span>
                                                  </td>
                                              }

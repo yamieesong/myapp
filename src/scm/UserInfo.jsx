@@ -71,10 +71,10 @@ const UserInfo = () => {
     }
     const mnAmountOnChange = (e) => {
 
-        if (e.target.value.match(/[^0-9],[,]/)) {
+        if (e.target.value.match(/[^0-9,]/)) {
             setMn_amount("")
         }else{
-            setMn_amount(e.target.value)
+            setMn_amount(threeComma(e.target.value))
         }
     }
 
@@ -96,7 +96,8 @@ const UserInfo = () => {
     }
 
     const threeComma = (val) => {
-        return val.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+        let cleanVal = val.replaceAll(",", "")
+        return cleanVal.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
 
     const setGagevueData = async (calendar) => {
@@ -207,16 +208,11 @@ const UserInfo = () => {
             });
     }
     const save = async (type) => {
-        if(type === "DELETE"){
-            alert("미구현")
-            closeModal()
-            return;
-        }
         if(mn_use_memo === "" || mn_use_dvs === "0" || mn_use_dvs_det === "0" || mn_pay_dvs === "0" || mn_amount === ""){
             alert("모든 항목을 입력해 주세요");
             return;
         }
-        
+
         let params = new URLSearchParams();
 
         params.append("mn_no", mn_no);
@@ -232,15 +228,36 @@ const UserInfo = () => {
 
         await axios
             .post("/scm/savegagevue.do", params)
-            .then(function (response) {
-                alert(response.data.resultMsg);
+            .then(function (res) {
+                alert(res.data.resultMsg);
                 getGagevueList()
                 closeModal();
             })
             .catch(function (error) {
                 alert("에러! API 요청에 오류가 있습니다. " + error);
             });
+    }
 
+    const del = async () => {
+        let params = new URLSearchParams();
+        params.append("mn_no", mn_no);
+
+        await axios
+            .post("/scm/deletegagevue.do", params)
+            .then(function (res) {
+                console.log(res);
+
+                if (res.data.result == "SUCCESS") {
+                    alert(res.data.resultMsg);
+                    getGagevueList()
+                    closeModal();
+                } else {
+                    alert("실패 했습니다.");
+                }
+            })
+            .catch(function (error) {
+                alert("에러! API 요청에 오류가 있습니다. " + error);
+            });
     }
 
     const renderEventContent = (eventInfo) => {
@@ -416,7 +433,7 @@ const UserInfo = () => {
                         <td>
                             <input
                                 type='text'
-                                value={mn_amount}
+                                value={threeComma(mn_amount)}
                                 onChange={mnAmountOnChange}
                             />
                         </td>
@@ -425,7 +442,7 @@ const UserInfo = () => {
                 <div className='modal-button'>
                     { action === "INSERT" && <button onClick={(e) => {save(action)}}> 등록</button> }
                     { action !== "INSERT" && <button onClick={(e) => {save(action)}}> 수정</button> }
-                    { action !== "INSERT" && <button onClick={(e) => {save("DELETE")}}> 삭제</button> }
+                    { action !== "INSERT" && <button onClick={del}> 삭제</button> }
                     <button onClick={closeModal}> 닫기</button>
                 </div>
             </Modal>

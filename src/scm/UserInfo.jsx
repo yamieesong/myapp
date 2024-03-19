@@ -14,6 +14,10 @@ const UserInfo = () => {
     const [weekendsVisible, setWeekendsVisible] = useState(true)
     const [currentEvents, setCurrentEvents] = useState([])
 
+    // 달력&리스트 변환
+    const [selectedMenu, setSelectedMenu] = useState(["calendar","list"])
+    const [curMenu, setCurMenu] = useState("calendar")
+
     // 달력에 표시할 데이터
     const [calendarDataList, setCalendarDataList] = useState([])
     // 풀캘린더
@@ -40,6 +44,10 @@ const UserInfo = () => {
     const [detail_code, setDetail_code] = useState([])
 
 
+    // 가게뷰 리스트
+    const [listTotalCnt, setListTotalCnt] = useState(0)
+
+
     const modalStyle = {
         content: {
             top: '50%',
@@ -51,12 +59,19 @@ const UserInfo = () => {
         },
     }
 
+    // useEffect(() => {
+    //     getGagevueList()
+    //     getCodeList()
+    // }, [])
+
     useEffect(() => {
         getGagevueList()
         getCodeList()
-    }, [])
+    }, [curMenu])
 
-
+    const curMenuOnChange = (e) => {
+        setCurMenu(e.target.value)
+    }
     const mnUseMemoOnChange = (e) => {
         setMn_use_memo(e.target.value)
     }
@@ -156,8 +171,9 @@ const UserInfo = () => {
         await axios
             .post('/scm/selectgagevueList.do', params)
             .then((res) => {
-                // console.log('/scm/selectgagevueList.do res start', res)
+                // console.log('/scm/selectgagevueList.do res start', res.data)
                 dispGagevueList(res.data)
+                setListTotalCnt(res.data.gagevueListCnt)
             })
             .catch((err) => {
                 alert(err.message)
@@ -172,7 +188,7 @@ const UserInfo = () => {
         }));
         setCalendarDataList(tmpList)
         //console.log("tmpList", tmpList)
-        //console.log("calendarDataList", calendarDataList)
+        console.log("calendarDataList", calendarDataList)
 
         if(Object.keys(calendar).length > 0){
             renderData(calendar)
@@ -187,7 +203,7 @@ const UserInfo = () => {
         await axios
             .post("/scm/selectgagevueOne.do", params)
             .then(function (res){
-                console.log("/scm/selectgagevueOne.do", res)
+                // console.log("/scm/selectgagevueOne.do", res)
                 setMn_dtm(res.data.gagevueOne.mn_dtm)
                 setMn_use_memo(res.data.gagevueOne.mn_use_memo)
                 setMn_use_dvs(res.data.gagevueOne.mn_use_dvs)
@@ -312,34 +328,104 @@ const UserInfo = () => {
 
     return (
         <>
-            <div>
-                <div>
-                    <FullCalendar
-                        plugins={[dayGridPlugin, interactionPlugin]}
-                        headerToolbar={{
-                            left: '',
-                            center: 'title',
-                            right: 'prev,next today',
-                        }}
-                        initialView='dayGridMonth'
-                        editable={true}
-                        selectable={true}
-                        selectMirror={true}
-                        dayMaxEvents={true}
-                        weekends={weekendsVisible}
-                        events={calendarDataList} // alternatively, use the `events` setting to fetch from a feed
-                        select={setGagevueData}
-                        eventContent={renderEventContent} // custom render function
-                        eventClick={setGagevueData}
-                        // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-                        /* you can update a remote database when these fire:
-                        eventAdd={openPop}
-                        eventChange={function(){}}
-                        eventRemove={function(){}}
-                        */
+            {selectedMenu.map((menu, idx, index) => (
+                <>
+                    {menu}&nbsp;:&nbsp;
+                    <input
+                        type='radio'
+                        style={{marginRight:"20px"}}
+                        key={menu}
+                        value={menu}
+                        checked={curMenu === menu}
+                        onChange={curMenuOnChange}
                     />
+                </>
+            ))}
+            { curMenu === "calendar" &&
+                <div>
+                    <div>
+                        <FullCalendar
+                            plugins={[dayGridPlugin, interactionPlugin]}
+                            headerToolbar={{
+                                left: '',
+                                center: 'title',
+                                right: 'prev,next today',
+                            }}
+                            initialView='dayGridMonth'
+                            editable={true}
+                            selectable={true}
+                            selectMirror={true}
+                            dayMaxEvents={true}
+                            weekends={weekendsVisible}
+                            events={calendarDataList} // alternatively, use the `events` setting to fetch from a feed
+                            select={setGagevueData}
+                            eventContent={renderEventContent} // custom render function
+                            eventClick={setGagevueData}
+                            // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+                            /* you can update a remote database when these fire:
+                            eventAdd={openPop}
+                            eventChange={function(){}}
+                            eventRemove={function(){}}
+                            */
+                        />
+                    </div>
                 </div>
-            </div>
+            }
+            {curMenu === "list" &&
+                <div
+                    class="gagevueList"
+                    style={{overflow: "scroll;", width: "100 %;", height: "500px;"}}
+                >
+                    <table
+                        class="col"
+                        border="1"
+                        width="75%"
+                        cellpadding="5"
+                        align="center"
+                        style={{borderCollapse: "collapse;", border: "1px rgb(22, 22, 22);"}}
+                    >
+                        {listTotalCnt === 0 &&
+                            <>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">가계부리스트</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4">데이터가 없습니다</td>
+                                    </tr>
+                                </tbody>
+                            </>
+                        }
+                        {listTotalCnt > 0 && calendarDataList.length > 0 &&
+                            <>
+                            {calendarDataList.map((item, index) => {
+                                return (
+                                    <tbody key={item.mn_no}>
+                                    <tr align="left" style={{border: "1px;", borderColor: "rgb(22, 22, 22)"}}>
+                                        <th scope="col" colSpan="4">
+                                                <span
+                                                    style={{marginRight: "10px;", fontSize: "large;", color: "black"}}>
+                                                    날짜 : {item.mn_dtm}
+                                                </span>
+                                            <span style={{marginRight: "10px;", color: "blue"}}>
+                                                    수입 : {"합계"}
+                                                </span>
+                                            <span style={{marginRight: "10px;", color: "red"}}>
+                                                    지출 : {"합계"}
+                                                </span>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                );
+                            })}
+                            </>
+                        }
+                        <br/>
+                    </table>
+                </div>
+            }
             <Modal
                 style={modalStyle}
                 isOpen={modalIsOpen}
@@ -366,12 +452,12 @@ const UserInfo = () => {
                         <th>구분</th>
                         <td>
                             {/*
-                            <input
-                                type='text'
-                                value={mn_use_dvs}
-                                onChange={mnUseDvsOnChange}
-                            />
-                            */}
+                                        <input
+                                            type='text'
+                                            value={mn_use_dvs}
+                                            onChange={mnUseDvsOnChange}
+                                        />
+                                        */}
                             <select value={mn_use_dvs} onChange={mnUseDvsOnChange}>
                                 <option key='0' value='0' disabled selected>
                                     구분
@@ -388,12 +474,12 @@ const UserInfo = () => {
                         <th>항목</th>
                         <td>
                             {/*
-                            <input
-                                type='text'
-                                value={mn_use_dvs_det}
-                                onChange={mnUseDvsDetOnChange}
-                            />
-                            */}
+                                        <input
+                                            type='text'
+                                            value={mn_use_dvs_det}
+                                            onChange={mnUseDvsDetOnChange}
+                                        />
+                                        */}
                             <select value={mn_use_dvs_det} onChange={mnUseDvsDetOnChange}>
                                 <option key='0' value='0' disabled selected>
                                     항목
@@ -416,8 +502,8 @@ const UserInfo = () => {
                                 onChange={mnPayDvsOnChange}
                             />
                             */}
-                            <select value={mn_pay_dvs} onChange={mnPayDvsOnChange}>
-                                <option key='0' value='0' disabled selected>
+                <select value={mn_pay_dvs} onChange={mnPayDvsOnChange}>
+                <option key='0' value='0' disabled selected>
                                     결제
                                 </option>
                                 {pay_dvs.map((item) => (

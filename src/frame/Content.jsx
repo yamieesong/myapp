@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import SamplePage1 from '../pages/SamplePage1'
 import FourHundredFour from '../pages/FourHundredFour'
 import SamplePage2 from '../sampletest/samplepage2'
@@ -14,42 +14,37 @@ import SamplePage4 from '../sampletest/samplepage4'
 import SamplePage10 from '../sampletest/samplepage10'
 import UserInfo from '../scm/UserInfo'
 import ExpendStatistics from '../mypage/ExpendStatistics'
+import IncomeStatistics from '../mypage/IncomeStatistics'
 
 const Content = (props) => {
   console.log('Content start')
   const [url, setUrl] = useState()
 
-
-  console.log("props", props)
+  console.log('props', props)
   let propsUrl = props.url
-  console.log("propsUrl", propsUrl)
+  console.log('propsUrl', propsUrl)
 
   let samplePageArr = [
-    <SamplePage1/>,
-    <SamplePage2/>,
-    <SamplePage3/>,
+    <SamplePage1 />,
+    <SamplePage2 />,
+    <SamplePage3 />,
     <SamplePage4 />,
     // <Samplepage5 />,
     // <SamplePage6 />,
     // <SamplePage7 />,
     // <SamplePage8 />,
     // <SamplePage9 />,
-    <SamplePage10/>,
+    <SamplePage10 />,
   ]
 
   //가게부 메뉴
-  let scmDirPageArr = [
-    <UserInfo/>,
-  ]
+  let scmDirPageArr = [<UserInfo />]
   //마이페이지 메뉴
-  let mypageDirPageArr = [
-      <ExpendStatistics/>
-  ]
+  let mypageDirPageArr = [<ExpendStatistics />, <IncomeStatistics />]
   //관리자 메뉴
-  let systemDirPageArr = [
-  ]
+  let systemDirPageArr = []
 
-  let testMenuArr = [<Testpage1/>, <Testpage2/>]
+  let testMenuArr = [<Testpage1 />, <Testpage2 />]
 
   let systemMenuArr = [
     //  <notice />, <comnCodMgr />, <FileSample />, <VueStudy />
@@ -66,27 +61,27 @@ const Content = (props) => {
     // console.log("propsUrl", propsUrl)
 
     if (propsUrl) {
-      let splitPropsUrl = propsUrl.split("/");
-      let pageArr = [];
+      let splitPropsUrl = propsUrl.split('/')
+      let pageArr = []
       //console.log("splitPropsUrl", splitPropsUrl)
       //가계부 메뉴
-      if(splitPropsUrl[1] === "scm"){
-        pageArr = scmDirPageArr;
-      //마이페이지 메뉴
-      }else if(splitPropsUrl[1] === "mypage"){
-        pageArr = mypageDirPageArr;
-      //관리자 메뉴
-      }else if(splitPropsUrl[1] === "dlm" || splitPropsUrl[1] === "system"){
-        pageArr = systemDirPageArr;
+      if (splitPropsUrl[1] === 'scm') {
+        pageArr = scmDirPageArr
+        //마이페이지 메뉴
+      } else if (splitPropsUrl[1] === 'mypage') {
+        pageArr = mypageDirPageArr
+        //관리자 메뉴
+      } else if (splitPropsUrl[1] === 'dlm' || splitPropsUrl[1] === 'system') {
+        pageArr = systemDirPageArr
       }
 
       // alert(splitPropsUrl[1])
-      console.log("pageArr", pageArr)
-      pageArr.forEach(function(page, idx){
+      console.log('pageArr', pageArr)
+      pageArr.forEach(function (page, idx) {
         //console.log("pageArr.forEach", page.type.name)
-        if(page.type.name.toLowerCase() === splitPropsUrl[2].toLowerCase()){
-          returnValue = page;
-          flag = true;
+        if (page.type.name.toLowerCase() === splitPropsUrl[2].toLowerCase()) {
+          returnValue = page
+          flag = true
         }
       })
     }
@@ -95,12 +90,12 @@ const Content = (props) => {
   }
 
   return (
-      <>
-        <div id='content'>
-          {/* {propsUrl} */}
-          <div>{content()}</div>
-        </div>
-      </>
+    <>
+      <div id='content'>
+        {/* {propsUrl} */}
+        <div>{content()}</div>
+      </div>
+    </>
   )
 }
 export default Content

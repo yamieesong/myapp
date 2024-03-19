@@ -6,8 +6,8 @@ import './mypage.css'
 import { useDispatch, useSelector } from 'react-redux'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
-/** 가계뷰 > 마이페이지 > 지출통계 ExpendStatistics  */
-const ExpendStatistics = () => {
+/** 가계뷰 > 마이페이지 > 수입통계 IncomeStatistics  */
+const IncomeStatistics = () => {
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
   const currentMonth = currentDate.getMonth() + 1
@@ -46,7 +46,7 @@ const ExpendStatistics = () => {
     let params = new URLSearchParams()
     params.append('from_date', fromDate) /** 시작날짜 */
     params.append('to_date', toDate) /** 종료날짜 */
-    params.append('mn_use_dvs', '1') /** 1:지출 2:수입 */
+    params.append('mn_use_dvs', '2') /** 1:지출 2:수입 */
     params.append('mn_rgst_id', userInfo.loginId) /** 로그인ID */
 
     await axios
@@ -95,9 +95,9 @@ const ExpendStatistics = () => {
         <a href='/dashboard/home' class='btn_set home'></a>
         <span class='btn_nav bold'>가계부</span>
         <span class='btn_nav bold'>마이페이지</span>
-        <span class='btn_nav bold'>지출통계</span>
+        <span class='btn_nav bold'>수입통계</span>
         <a
-          href='/dashboard/mypage/ExpendStatistics'
+          href='/dashboard/mypage/IncomeStatistics'
           class='btn_set refresh'
         ></a>
       </p>
@@ -167,7 +167,7 @@ const ExpendStatistics = () => {
         <table className='col'>
           <thead>
             <tr>
-              <th scope='col'>지출항목</th>
+              <th scope='col'>수입항목</th>
               <th scope='col'>총금액</th>
             </tr>
           </thead>
@@ -186,4 +186,4 @@ const ExpendStatistics = () => {
   )
 }
 
-export default ExpendStatistics
+export default IncomeStatistics

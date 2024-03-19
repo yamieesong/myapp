@@ -172,3 +172,7 @@ p.copy span {
 .dashboard > ul > li .col > dl > dd {
   margin-left: 150px;
 }
+
+a:hover {
+  cursor: pointer;
+}

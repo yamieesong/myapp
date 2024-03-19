@@ -216,7 +216,7 @@ const Register = () => {
             </p>
             <p style={{margin: '10px'}}><span>(지출목표 알림 %는 가입 시 70%가 기본값으로 설정되며, 마이페이지를 통해 수정하실 수 있습니다.)</span></p>
             <hr/>
-            <p><input onChange={allChk} type='checkbox'/><span><b>모두동의</b></span></p>
+            <p><input onChange={allChk} type='checkbox'/><span onClick={allChk}><b>모두동의</b></span></p>
             {/*checked={chk1State}*/}
             <p><input ref={chk1} type='checkbox'/><span>이용약관 동의 (보기)</span></p>
             <p><input ref={chk2} type='checkbox'/><span>개인정보 수집 이용 동의 (보기)</span></p>

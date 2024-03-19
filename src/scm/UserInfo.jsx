@@ -381,7 +381,7 @@ const UserInfo = () => {
             {curMenu === "list" &&
                 <div
                     className="gagevueList"
-                    style={{overflow: "scroll", width: "100 %", height: "500px"}}
+                    style={{overflowY: "auto", width: "100 %", height: "650px", marginTop: "20px"}}
                 >
                     <table
                         className="col"
@@ -389,7 +389,7 @@ const UserInfo = () => {
                         width="75%"
                         cellPadding="5"
                         align="center"
-                        style={{borderCollapse: "collapse", border: "1px rgb(22, 22, 22)", marginTop: "20px"}}
+                        style={{borderCollapse: "collapse", border: "1px rgb(22, 22, 22)"}}
                     >
                         {listTotalCnt === 0 &&
                             <>

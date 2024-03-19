@@ -45,6 +45,7 @@ const UserInfo = () => {
 
 
     // 가게뷰 리스트
+    const [listDataList, dispListDataList] = useState([])
     const [listTotalCnt, setListTotalCnt] = useState(0)
 
 
@@ -59,15 +60,15 @@ const UserInfo = () => {
         },
     }
 
-    // useEffect(() => {
-    //     getGagevueList()
-    //     getCodeList()
-    // }, [])
-
     useEffect(() => {
         getGagevueList()
         getCodeList()
-    }, [curMenu])
+    }, [])
+
+    // useEffect(() => {
+    //     getGagevueList()
+    //     getCodeList()
+    // }, [curMenu])
 
     const curMenuOnChange = (e) => {
         setCurMenu(e.target.value)
@@ -100,7 +101,6 @@ const UserInfo = () => {
         initInputData()
         setModalIsOpen(false)
     }
-
     const initInputData = () => {
         setMn_no("")
         setMn_use_memo("")
@@ -109,12 +109,10 @@ const UserInfo = () => {
         setMn_pay_dvs("0")
         setMn_amount("")
     }
-
     const threeComma = (val) => {
         let cleanVal = val.replaceAll(",", "")
         return cleanVal.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
-
     const setGagevueData = async (calendar) => {
         openModal();
         // console.log("calendar", calendar.event)
@@ -129,7 +127,6 @@ const UserInfo = () => {
             selectedData(calendar.event._def.publicId)
         }
     }
-
     const renderData = (calendar) => {
         let calendarApi = calendar.view.calendar
         calendarApi.removeAllEvents()
@@ -137,6 +134,26 @@ const UserInfo = () => {
         calendarDataList.forEach(function(data){
             calendarApi.addEvent(data)
         })
+    }
+    const dispCalendarData = (info) => {
+        // console.log("disGagevueList", info.gagevueList)
+        const tmpList = info.gagevueList.map((list) => ({
+            id: list.mn_no,
+            title: list.mn_use_memo,
+            start: list.mn_dtm,
+        }));
+        setCalendarDataList(tmpList)
+        //console.log("tmpList", tmpList)
+        // console.log("calendarDataList", calendarDataList)
+
+        if(Object.keys(calendar).length > 0){
+            renderData(calendar)
+        }
+    }
+    const dispListData = (info) => {
+        // console.log("info.gagevueList", info.gagevueList)
+        dispListDataList(info.gagevueList)
+        setListTotalCnt(info.gagevueListCnt)
     }
 
     const getCodeList = async () => {
@@ -172,29 +189,13 @@ const UserInfo = () => {
             .post('/scm/selectgagevueList.do', params)
             .then((res) => {
                 // console.log('/scm/selectgagevueList.do res start', res.data)
-                dispGagevueList(res.data)
-                setListTotalCnt(res.data.gagevueListCnt)
+                dispCalendarData(res.data)
+                dispListData(res.data)
             })
             .catch((err) => {
                 alert(err.message)
             })
     }
-    const dispGagevueList = (info) => {
-        // console.log("disGagevueList", info.gagevueList)
-        const tmpList = info.gagevueList.map((list) => ({
-            id: list.mn_no,
-            title: list.mn_use_memo,
-            start: list.mn_dtm,
-        }));
-        setCalendarDataList(tmpList)
-        //console.log("tmpList", tmpList)
-        console.log("calendarDataList", calendarDataList)
-
-        if(Object.keys(calendar).length > 0){
-            renderData(calendar)
-        }
-    }
-
     const selectedData = async (mn_no) => {
         setMn_no(mn_no)
         let params = new URLSearchParams();
@@ -210,14 +211,6 @@ const UserInfo = () => {
                 setMn_use_dvs_det(res.data.gagevueOne.mn_use_dvs_det)
                 setMn_pay_dvs(res.data.gagevueOne.mn_pay_dvs)
                 setMn_amount(res.data.gagevueOne.mn_amount)
-                /*
-                vm.mn_dtm = response.data.gagevueOne.mn_dtm; // * 사용날짜
-                vm.mn_use_memo = response.data.gagevueOne.mn_use_memo; // * 사용내용 : 메모
-                vm.mn_use_dvs = response.data.gagevueOne.mn_use_dvs; // * 구분 1: 지출 2:수입
-                vm.mn_use_dvs_det = response.data.gagevueOne.mn_use_dvs_det; // * 항목 선택 : U06 교육/육아 등등
-                vm.mn_pay_dvs = response.data.gagevueOne.mn_pay_dvs; // * 결제구분 : 1:카드 2:현금
-                vm.mn_amount = response.data.gagevueOne.mn_amount; // * 결제금액
-                */
             })
             .catch(function (error) {
                 alert("에러! API 요청에 오류가 있습니다. " + error);
@@ -253,7 +246,6 @@ const UserInfo = () => {
                 alert("에러! API 요청에 오류가 있습니다. " + error);
             });
     }
-
     const del = async () => {
         let params = new URLSearchParams();
         params.append("mn_no", mn_no);
@@ -261,8 +253,7 @@ const UserInfo = () => {
         await axios
             .post("/scm/deletegagevue.do", params)
             .then(function (res) {
-                console.log(res);
-
+                // console.log(res);
                 if (res.data.result == "SUCCESS") {
                     alert(res.data.resultMsg);
                     getGagevueList()
@@ -373,56 +364,55 @@ const UserInfo = () => {
             }
             {curMenu === "list" &&
                 <div
-                    class="gagevueList"
+                    className="gagevueList"
                     style={{overflow: "scroll;", width: "100 %;", height: "500px;"}}
                 >
                     <table
-                        class="col"
+                        className="col"
                         border="1"
                         width="75%"
-                        cellpadding="5"
+                        cellPadding="5"
                         align="center"
                         style={{borderCollapse: "collapse;", border: "1px rgb(22, 22, 22);"}}
                     >
                         {listTotalCnt === 0 &&
                             <>
                                 <thead>
-                                    <tr>
-                                        <th scope="col">가계부리스트</th>
-                                    </tr>
+                                <tr>
+                                    <th scope="col">가계부리스트</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td colspan="4">데이터가 없습니다</td>
-                                    </tr>
+                                <tr>
+                                    <td colSpan="4">데이터가 없습니다</td>
+                                </tr>
                                 </tbody>
                             </>
                         }
-                        {listTotalCnt > 0 && calendarDataList.length > 0 &&
+                        {listTotalCnt > 0 &&
                             <>
-                            {calendarDataList.map((item, index) => {
-                                return (
-                                    <tbody key={item.mn_no}>
-                                    <tr align="left" style={{border: "1px;", borderColor: "rgb(22, 22, 22)"}}>
-                                        <th scope="col" colSpan="4">
-                                                <span
-                                                    style={{marginRight: "10px;", fontSize: "large;", color: "black"}}>
-                                                    날짜 : {item.mn_dtm}
-                                                </span>
-                                            <span style={{marginRight: "10px;", color: "blue"}}>
-                                                    수입 : {"합계"}
-                                                </span>
-                                            <span style={{marginRight: "10px;", color: "red"}}>
-                                                    지출 : {"합계"}
-                                                </span>
-                                        </th>
-                                    </tr>
-                                    </tbody>
-                                );
-                            })}
+                                {listDataList.map((item, index) => {
+                                    return (
+                                        <tbody key={item.mn_no}>
+                                            <tr align="left" style={{border: "1px;", borderColor: "rgb(22, 22, 22)"}}>
+                                                <th scope="col" colSpan="4">
+                                                    <span
+                                                        style={{marginRight: "10px;", fontSize: "large;", color: "black"}}>
+                                                        날짜 : {item.mn_dtm}
+                                                    </span>
+                                                    <span style={{marginRight: "10px;", color: "blue"}}>
+                                                        수입 : { threeComma(item.sum_for_use_dvs_import_sum) }
+                                                    </span>
+                                                    <span style={{marginRight: "10px;", color: "red"}}>
+                                                        지출 : { threeComma(item.sum_for_use_dvs_expense_sum) }
+                                                    </span>
+                                                </th>
+                                            </tr>
+                                        </tbody>
+                                    );
+                                })}
                             </>
                         }
-                        <br/>
                     </table>
                 </div>
             }

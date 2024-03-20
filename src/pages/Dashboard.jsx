@@ -109,7 +109,7 @@ const Dashboard = () => {
         <div id="mask"></div>
         <div id="wrap_area">
           <div id="container">
-            <ul>
+            <ul style={{ padding: '10px' }}>
               <li class="lnb">{<LeftMenu />}</li>
               <li class="contents">
                 <div class="content">{userParam && <Content url={url} />}</div>

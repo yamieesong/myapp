@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Calendar, formatDate } from '@fullcalendar/core'
+import Core from '@fullcalendar/core'
+import ko from '@fullcalendar/core/locales/ko';
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
@@ -12,8 +13,6 @@ import {current} from "@reduxjs/toolkit";
 
 const UserInfo = () => {
     const {userInfo, isLoading, error} = useSelector((store) => store.login)
-    const [weekendsVisible, setWeekendsVisible] = useState(true)
-    const [currentEvents, setCurrentEvents] = useState([])
 
     // 달력&리스트 변환
     const [menuList, setMenuList] = useState(["calendar","list"])
@@ -366,6 +365,7 @@ const UserInfo = () => {
                     <div>
                         <FullCalendar
                             plugins={[dayGridPlugin, interactionPlugin]}
+                            locale={ko}
                             headerToolbar={{
                                 left: '',
                                 center: 'title',
@@ -376,7 +376,6 @@ const UserInfo = () => {
                             selectable={true}
                             selectMirror={true}
                             dayMaxEvents={true}
-                            weekends={weekendsVisible}
                             events={calendarDataList}
                             select={setGagevueData}
                             eventContent={renderEventContent}

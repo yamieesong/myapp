@@ -6,8 +6,10 @@ import { useNavigate, Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { initUserInfo, userInfo } from '../redux/loginSlice'
 import zustandStore from '../zustand/zustandStore'
+// import testImg from './testImg.png'
 
 const LeftMenu = () => {
+  console.log('LeftMenu!!!')
   const dispatch = useDispatch()
   const { userInfo, isLoading, error } = useSelector((store) => store.login)
 
@@ -16,10 +18,17 @@ const LeftMenu = () => {
   const [state, setState] = useState(false)
 
   useEffect(() => {
-    console.log('leftmenu userInfo')
+    console.log('leftmenu userInfo!!!')
 
-    if ('SUCCESS' === userInfo.result) setLoginId(userInfo.loginId)
-    else if ('SUCCESS' === zustandUserInfo.data.result) setLoginId(zustandUserInfo.data.loginId)
+    if ('SUCCESS' === userInfo.result) {
+      // alert('리덕스')
+      setMenuList(userInfo.usrMnuAtrt)
+      setLoginId(userInfo.loginId)
+    } else if ('SUCCESS' === zustandUserInfo.data.result) {
+      // alert('zustand')
+      setMenuList(zustandUserInfo.data.usrMnuAtrt)
+      setLoginId(zustandUserInfo.data.loginId)
+    }
   }, [userInfo])
 
   useEffect(() => {
@@ -63,67 +72,6 @@ const LeftMenu = () => {
     */
   }
 
-  const loginProc = async () => {
-    await axios
-      .post(
-        '/loginProc.do',
-        new URLSearchParams({ lgn_Id: 'admin', pwd: 'admin' }),
-      )
-      .then((resp) => {
-        console.log('resp!!!!!!!!!!!!!!')
-        setMenuList(resp.data.usrMnuAtrt)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  useLayoutEffect(() => {
-    console.log('leftmenu useEffect start')
-    loginProc()
-    // setLoginId(Session.get('loginId'))
-    // //console.log(Session.get('usrMnuAtrt'))
-    // //menulist2 = Session.get('usrMnuAtrt')
-    // //console.log('??????????')
-    // if (Session.get('usrMnuAtrt') != undefined) {
-    //   setMenuList(Session.get('usrMnuAtrt'))
-    // }
-    // const usrMnuAtrt2 = sessionStorage.getItem('usrMnuAtrt2')
-    // console.log(usrMnuAtrt2)
-    // let loginInfo = sessionStorage.getItem('loginInfo')
-    // console.log(loginInfo)
-    //
-    // let loginInfo2 = sessionStorage.getItem('loginInfo2')
-    // console.log(loginInfo2)
-    // console.log('debug')
-  }, [])
-  /*
-  useEffect(() => {
-    console.log('leftmenu useEffect start')
-    console.log(Session.get('loginResult'))
-
-    console.log(Session.get('usrMnuAtrt'))
-
-    Session.get('usrMnuAtrt').forEach((item) => {
-      item.isShow = false
-    })
-
-    console.log(Session.get('usrMnuAtrt'))
-    setMenulist([Session.get('usrMnuAtrt'), ...menulist]);
-    //setMenulist(Session.get('usrMnuAtrt'));
-    testArr=Session.get('usrMnuAtrt');
-    console.log('menulist start');
-
-    if (Session.get('loginResult') === 'S') {
-      console.log('로그인상태')
-      console.log(Session.get('loginId'))
-      setLoginId(Session.get('loginId'))
-    } else {
-      navigate('/')
-    }
-  })
-  */
-
   let i = -1
   const nodeList = () => {
     console.log('nodeList start')
@@ -140,11 +88,6 @@ const LeftMenu = () => {
       nodeList.push(
         <li>
           {<Link to={url}>- {menuList[i].nodeList[j].mnu_nm}</Link>}
-          {
-            // <a href={url}>
-            //   - {menuList[i].nodeList[j].mnu_nm}
-            // </a>
-          }
         </li>,
       )
     }
@@ -167,13 +110,16 @@ const LeftMenu = () => {
       <div id="lnb_area">
         <div class="logo">
           <div id="header">
-            <a class="logo" href={'/dashboard/home'}>
-              <img id="logoImg" src={logo_img} />
-            </a>
+            <Link class="logo" to="/dashboard/home">
+              <img id="logoImg" src={logo_img} alt="logo_img" />
+            </Link>
           </div>
         </div>
       </div>
       <div style={{ padding: '10px' }} class="login">
+        <div>
+          {/*<img src={testImg} />*/}
+        </div>
         <p><b>{loginId}</b> 님 접속중 | <a className="logout"
                                        onClick={logoutproc}
                                        name="modal"

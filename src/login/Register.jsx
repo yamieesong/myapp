@@ -102,6 +102,17 @@ const Register = () => {
   const pwonChage = () => {
     console.log(pwRef.current.value)
     setPw(pwRef.current.value)
+
+    const pw = pwRef.current.value
+    if (8 > pw.length) {
+      setPwMsg(true)
+      // alert('8~20자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.')
+      // pwRef.current.focus()
+    } else {
+      setPwMsg(false)
+      // pw2Ref.current.focus()
+    }
+
     if (pwRef.current.value === pw2Ref.current.value) {
       setVisible(true)
     } else {
@@ -170,7 +181,7 @@ const Register = () => {
     if (8 > pw.length) {
       setPwMsg(true)
       // alert('8~20자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.')
-      pwRef.current.focus()
+      // pwRef.current.focus()
     } else {
       setPwMsg(false)
       // pw2Ref.current.focus()
@@ -199,7 +210,8 @@ const Register = () => {
       }} />
         <button onClick={idCheck}>중복체크</button>
       </p>
-      <p><span>비번</span><input onBlur={pwOnBlur} maxLength="20" type="password" ref={pwRef} onChange={pwonChage} />
+      {/*onBlur={pwOnBlur}*/}
+      <p><span>비번</span><input maxLength="20" type="password" ref={pwRef} onChange={pwonChage} />
         {pwDisplay ? <button type="button" onClick={pwShow}>비번보임</button> :
           <button type="button" onClick={pwHide}>비번안보임</button>}
       </p>

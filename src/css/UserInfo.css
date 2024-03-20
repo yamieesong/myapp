@@ -66,3 +66,14 @@ tr.row:hover {
   position: absolute;
   z-index: 999999999;
 }
+.fc-col-header-cell-cushion {
+  font-weight: bold;
+}
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}

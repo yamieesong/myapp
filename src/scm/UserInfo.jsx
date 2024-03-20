@@ -169,19 +169,19 @@ const UserInfo = () => {
     }
     const setGagevueData = async (calendar) => {
         openModal();
-        if(refCurMenu.current === "calendar"){
+        if (refCurMenu.current === "calendar") {
             // console.log("calendar", calendar.event)
             setCalendar(calendar)
             setMn_dtm(calendar.startStr)
 
-            if(typeof calendar.event === "undefined"){
+            if (typeof calendar.event === "undefined") {
                 setAction("INSERT")
-            }else{
+            } else {
                 setAction("UPDATE")
                 // alert(calendar.event._def.publicId)
                 selectedData(calendar.event._def.publicId)
             }
-        }else if(refCurMenu.current === "list"){
+        } else if (refCurMenu.current === "list") {
             let mn_no = calendar;
             // alert(mn_no)
             setAction("UPDATE")
@@ -192,7 +192,7 @@ const UserInfo = () => {
         let calendarApi = calendar.view.calendar
         calendarApi.removeAllEvents()
 
-        calendarDataList.forEach(function(data){
+        calendarDataList.forEach(function (data) {
             calendarApi.addEvent(data)
         })
     }

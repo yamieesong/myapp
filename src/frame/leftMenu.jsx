@@ -86,7 +86,7 @@ const LeftMenu = () => {
         url = url.slice(0, url.length - 3)
       }
       nodeList.push(
-        <li>
+        <li key={j}>
           {<Link to={url}>- {menuList[i].nodeList[j].mnu_nm}</Link>}
         </li>,
       )

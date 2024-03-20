@@ -8,6 +8,7 @@ import axios from "axios";
 
 import Modal from 'react-modal'
 import '../css/UserInfo.css'
+import {current} from "@reduxjs/toolkit";
 
 const UserInfo = () => {
     const {userInfo, isLoading, error} = useSelector((store) => store.login)
@@ -15,8 +16,9 @@ const UserInfo = () => {
     const [currentEvents, setCurrentEvents] = useState([])
 
     // 달력&리스트 변환
-    const [selectedMenu, setSelectedMenu] = useState(["calendar","list"])
-    const [curMenu, setCurMenu] = useState("calendar")
+    const [menuList, setMenuList] = useState(["calendar","list"])
+    // const [curMenu, setCurMenu] = useState("calendar")
+    let refCurMenu = useRef("calendar")
 
     // 달력에 표시할 데이터
     const [calendarDataList, setCalendarDataList] = useState([])
@@ -35,6 +37,12 @@ const UserInfo = () => {
     const [mn_pay_dvs, setMn_pay_dvs] = useState("0")
     const [mn_amount, setMn_amount] = useState("")
 
+    // 데이트픽커
+    // const [searchFromDate, setSearchFromDate] = useState("")
+    // const [searchToDate, setSearchToDate] = useState("")
+    const refFromDate = useRef("")
+    const refToDate = useRef("")
+
     // DB액션 플레스
     const [action, setAction] = useState("")
 
@@ -43,10 +51,11 @@ const UserInfo = () => {
     const [use_dvs, setUse_dvs] = useState([])
     const [detail_code, setDetail_code] = useState([])
 
-
     // 가게뷰 리스트
     const [listDataList, dispListDataList] = useState([])
     const [listTotalCnt, setListTotalCnt] = useState(0)
+
+
 
 
     const modalStyle = {
@@ -65,13 +74,16 @@ const UserInfo = () => {
         getCodeList()
     }, [])
 
-    // useEffect(() => {
-    //     getGagevueList()
-    //     getCodeList()
-    // }, [curMenu])
-
     const curMenuOnChange = (e) => {
-        setCurMenu(e.target.value)
+        // setCurMenu(e.target.value)
+        refCurMenu.current = e.target.value
+        if(refCurMenu.current === "calendar"){
+            refFromDate.current = ""
+            refToDate.current = ""
+        }else if(refCurMenu.current === "list"){
+            initDatePicker()
+        }
+        getGagevueList()
     }
     const mnUseMemoOnChange = (e) => {
         setMn_use_memo(e.target.value)
@@ -93,6 +105,20 @@ const UserInfo = () => {
             setMn_amount(threeComma(e.target.value))
         }
     }
+    const searchFromDateOnChange = (e) => {
+        // setSearchFromDate(e.target.value)
+        refFromDate.current = e.target.value
+        if(dateChk() === "normal"){
+            getGagevueList()
+        }
+    }
+    const searchToDateOnChange = (e) => {
+        // setSearchToDate(e.target.value)
+        refToDate.current = e.target.value
+        if(dateChk() === "normal"){
+            getGagevueList()
+        }
+    }
 
     const openModal = () => {
         setModalIsOpen(true)
@@ -100,6 +126,22 @@ const UserInfo = () => {
     const closeModal = () => {
         initInputData()
         setModalIsOpen(false)
+    }
+    const dateChk = () => {
+        let fromDate = new Date(refFromDate.current);
+        let toDate = new Date(refToDate.current);
+        let diff = Math.abs(fromDate.getTime() - toDate.getTime());
+        diff = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+        if(fromDate > toDate){
+            alert("시작일보다 종료일이 빠릅니다.")
+            return "early"
+        }else if(diff > 90){
+            alert("3개월 기간의 내역만 가능합니다.")
+            return "diff"
+        }else{
+            return "normal"
+        }
     }
     const initInputData = () => {
         setMn_no("")
@@ -109,13 +151,21 @@ const UserInfo = () => {
         setMn_pay_dvs("0")
         setMn_amount("")
     }
+    const initDatePicker = () => {
+        let date = new Date()
+        let curYear = date.getFullYear().toString()
+        let curMonth = (date.getMonth()+1).toString().length === 1 ? "0"+(date.getMonth()+1) : (date.getMonth()+1).toString()
+        let curDay = (date.getDate()).toString().length === 1 ? "0"+(date.getDate()) : (date.getDate()).toString()
+        refFromDate.current = curYear+"-"+curMonth+"-01"
+        refToDate.current = curYear+"-"+curMonth+"-"+curDay
+    }
     const threeComma = (val) => {
         let cleanVal = val.replaceAll(",", "")
         return cleanVal.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
     const setGagevueData = async (calendar) => {
         openModal();
-        if(curMenu === "calendar"){
+        if(refCurMenu.current === "calendar"){
             // console.log("calendar", calendar.event)
             setCalendar(calendar)
             setMn_dtm(calendar.startStr)
@@ -127,7 +177,7 @@ const UserInfo = () => {
                 // alert(calendar.event._def.publicId)
                 selectedData(calendar.event._def.publicId)
             }
-        }else if(curMenu === "list"){
+        }else if(refCurMenu.current === "list"){
             let mn_no = calendar;
             // alert(mn_no)
             setAction("UPDATE")
@@ -200,6 +250,11 @@ const UserInfo = () => {
     const getGagevueList = async () => {
         let params = new URLSearchParams();
         params.append("mn_rgst_id", userInfo.loginId);
+        
+        if(refCurMenu.current === "list"){
+            params.append("from_date", refFromDate.current);
+            params.append("to_date", refToDate.current);
+        }
 
         await axios
             .post('/scm/selectgagevueList.do', params)
@@ -291,51 +346,9 @@ const UserInfo = () => {
         )
     }
 
-    const Sidebar = ({ weekendsVisible, handleWeekendsToggle, currentEvents }) => {
-        return (
-            <div className='demo-app-sidebar'>
-                <div className='demo-app-sidebar-section'>
-                    <h2>Instructions</h2>
-                    <ul>
-                        <li>Select dates and you will be prompted to create a new event</li>
-                        <li>Drag, drop, and resize events</li>
-                        <li>Click an event to delete it</li>
-                    </ul>
-                </div>
-                <div className='demo-app-sidebar-section'>
-                    <label>
-                        <input
-                            type='checkbox'
-                            checked={weekendsVisible}
-                            onChange={handleWeekendsToggle}
-                        ></input>
-                        toggle weekends
-                    </label>
-                </div>
-                <div className='demo-app-sidebar-section'>
-                    <h2>All Events ({currentEvents.length})</h2>
-                    <ul>
-                        {currentEvents.map((event) => (
-                            <SidebarEvent key={event.id} event={event} />
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        )
-    }
-
-    const SidebarEvent = ({ event }) => {
-        return (
-            <li key={event.id}>
-                <b>{formatDate(event.start, {year: 'numeric', month: 'short', day: 'numeric'})}</b>
-                <i>{event.title}</i>
-            </li>
-        )
-    }
-
     return (
         <>
-            {selectedMenu.map((menu, idx, index) => (
+            {menuList.map((menu, idx, index) => (
                 <>
                     {menu}&nbsp;:&nbsp;
                     <input
@@ -343,12 +356,12 @@ const UserInfo = () => {
                         style={{marginRight:"20px"}}
                         key={menu}
                         value={menu}
-                        checked={curMenu === menu}
+                        checked={refCurMenu.current === menu}
                         onChange={curMenuOnChange}
                     />
                 </>
             ))}
-            { curMenu === "calendar" &&
+            { refCurMenu.current === "calendar" &&
                 <div>
                     <div>
                         <FullCalendar
@@ -364,25 +377,32 @@ const UserInfo = () => {
                             selectMirror={true}
                             dayMaxEvents={true}
                             weekends={weekendsVisible}
-                            events={calendarDataList} // alternatively, use the `events` setting to fetch from a feed
+                            events={calendarDataList}
                             select={setGagevueData}
-                            eventContent={renderEventContent} // custom render function
+                            eventContent={renderEventContent}
                             eventClick={setGagevueData}
-                            // eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-                            /* you can update a remote database when these fire:
-                            eventAdd={openPop}
-                            eventChange={function(){}}
-                            eventRemove={function(){}}
-                            */
                         />
                     </div>
                 </div>
             }
-            {curMenu === "list" &&
+            {refCurMenu.current === "list" &&
                 <div
                     className="gagevueList"
                     style={{overflowY: "auto", width: "100 %", height: "650px", marginTop: "20px"}}
                 >
+                    <div>
+                        <input
+                            type='date'
+                            value={refFromDate.current}
+                            onChange={searchFromDateOnChange}
+                        />
+                        ~
+                        <input
+                            type='date'
+                            value={refToDate.current}
+                            onChange={searchToDateOnChange}
+                        />
+                    </div>
                     <table
                         className="col"
                         border="1"
@@ -408,13 +428,14 @@ const UserInfo = () => {
                         {listTotalCnt > 0 &&
                             <>
                                 {listDataList.map((item, idx) => {
-                                     // return (idx === (listDataList.length-1) || item.mn_dtm !== listDataList[idx+1].mn_dtm) &&
-                                     return (
+                                    // return (idx === (listDataList.length-1) || item.mn_dtm !== listDataList[idx+1].mn_dtm) &&
+                                    return (
 
-                                         <tbody key={item.mn_no}>
-                                             {(idx === 0 || item.mn_dtm !== listDataList[idx - 1].mn_dtm) &&
-                                             <tr align="left" style={{border: "1px", borderColor: "rgb(22, 22, 22)"}}>
-                                                 <th scope="col" colSpan="4" style={{backgroundColor: "skyblue", padding: "10px"}}>
+                                        <tbody key={item.mn_no}>
+                                        {(idx === 0 || item.mn_dtm !== listDataList[idx - 1].mn_dtm) &&
+                                            <tr align="left" style={{border: "1px", borderColor: "rgb(22, 22, 22)"}}>
+                                                <th scope="col" colSpan="4"
+                                                    style={{backgroundColor: "skyblue", padding: "10px"}}>
                                                      <span style={{
                                                          fontSize: "large",
                                                          color: "black",
@@ -422,27 +443,29 @@ const UserInfo = () => {
                                                      }}>
                                                      {item.mn_dtm}
                                                      </span>
-                                                     &nbsp;
-                                                     <span style={{marginRight: "10px", color: "blue"}}>
+                                                    &nbsp;
+                                                    <span style={{marginRight: "10px", color: "blue"}}>
                                                         수입 : {threeComma(item.sum_for_use_dvs_import_sum)}
                                                      </span>
-                                                     &nbsp;
-                                                     <span style={{marginRight: "10px", color: "red"}}>
+                                                    &nbsp;
+                                                    <span style={{marginRight: "10px", color: "red"}}>
                                                         지출 : {threeComma(item.sum_for_use_dvs_expense_sum)}
                                                      </span>
-                                                 </th>
-                                             </tr>
-                                             }
-                                             {/*/!**/}
-                                             <tr align="left" onClick={(e) => {setGagevueData(item.mn_no)}}>
-                                                 <td rowspan="3" style={{fontSize: "18px"}}>
-                                                     <span>{item.mn_use_memo}</span>
-                                                 </td>
-                                                 {item.mn_use_dvs === "1" &&
-                                                 <td align="right">
+                                                </th>
+                                            </tr>
+                                        }
+                                        {/*/!**/}
+                                        <tr align="left" onClick={(e) => {
+                                            setGagevueData(item.mn_no)
+                                        }}>
+                                            <td rowspan="3" style={{fontSize: "18px"}}>
+                                                <span>{item.mn_use_memo}</span>
+                                            </td>
+                                            {item.mn_use_dvs === "1" &&
+                                                <td align="right">
                                                     <span style={{color: "red"}}>
                                                         {item.mn_pay_dvs === "1" &&
-                                                          <span>
+                                                            <span>
                                                               카드 :&nbsp;
                                                           </span>
                                                         }
@@ -453,13 +476,13 @@ const UserInfo = () => {
                                                         }
                                                         {threeComma(item.mn_amount)}
                                                     </span>
-                                                 </td>
-                                             }
-                                             {item.mn_use_dvs === "2" &&
-                                                 <td align="right">
+                                                </td>
+                                            }
+                                            {item.mn_use_dvs === "2" &&
+                                                <td align="right">
                                                     <span style={{color: "blue"}}>
                                                         {item.mn_pay_dvs === "1" &&
-                                                          <span>
+                                                            <span>
                                                               카드 :&nbsp;
                                                           </span>
                                                         }
@@ -470,15 +493,15 @@ const UserInfo = () => {
                                                         }
                                                         {threeComma(item.mn_amount)}
                                                     </span>
-                                                 </td>
-                                             }
-                                             </tr>
-                                             <tr align="right">
-                                                 <td align="left">{item.mn_use_dvs_det_name}</td>
-                                             </tr>
-                                             {/**!/*/}
-                                         </tbody>
-                                     );
+                                                </td>
+                                            }
+                                        </tr>
+                                        <tr align="right">
+                                            <td align="left">{item.mn_use_dvs_det_name}</td>
+                                        </tr>
+                                        {/**!/*/}
+                                        </tbody>
+                                    );
                                 })}
                             </>
                         }

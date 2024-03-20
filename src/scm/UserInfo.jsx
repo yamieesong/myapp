@@ -386,23 +386,24 @@ const UserInfo = () => {
                 </div>
             }
             {refCurMenu.current === "list" &&
+                <>
+                <div style={{marginBottom: "20px", marginTop: "20px"}}>
+                    <input
+                        type='date'
+                        value={refFromDate.current}
+                        onChange={searchFromDateOnChange}
+                    />
+                    ~
+                    <input
+                        type='date'
+                        value={refToDate.current}
+                        onChange={searchToDateOnChange}
+                    />
+                </div>
                 <div
                     className="gagevueList"
                     style={{overflowY: "auto", width: "100 %", height: "650px", marginTop: "20px"}}
                 >
-                    <div>
-                        <input
-                            type='date'
-                            value={refFromDate.current}
-                            onChange={searchFromDateOnChange}
-                        />
-                        ~
-                        <input
-                            type='date'
-                            value={refToDate.current}
-                            onChange={searchToDateOnChange}
-                        />
-                    </div>
                     <table
                         className="col"
                         border="1"
@@ -507,6 +508,7 @@ const UserInfo = () => {
                         }
                     </table>
                 </div>
+                </>
             }
             <Modal
                 style={modalStyle}

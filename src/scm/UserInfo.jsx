@@ -162,6 +162,11 @@ const UserInfo = () => {
         let cleanVal = val.replaceAll(",", "")
         return cleanVal.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     }
+    const dateFormat = () => {
+        // console.log("dateFormat", typeof mn_dtm, mn_dtm)
+        let date = mn_dtm.split("-")[0]+"년 "+mn_dtm.split("-")[1]+"월 "+mn_dtm.split("-")[2]+"일"
+        return date
+    }
     const setGagevueData = async (calendar) => {
         openModal();
         if(refCurMenu.current === "calendar"){
@@ -197,6 +202,7 @@ const UserInfo = () => {
             id: list.mn_no,
             title: list.mn_use_memo,
             start: list.mn_dtm,
+            backgroundColor: list.mn_use_dvs === "1" ? "#DB765C" : "#1DBBDB"
         }));
         setCalendarDataList(tmpList)
         //console.log("tmpList", tmpList)
@@ -366,6 +372,7 @@ const UserInfo = () => {
                         <FullCalendar
                             plugins={[dayGridPlugin, interactionPlugin]}
                             locale={ko}
+                            dayHeaderFormat={{weekday:"long"}}
                             headerToolbar={{
                                 left: '',
                                 center: 'title',

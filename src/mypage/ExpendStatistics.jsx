@@ -31,6 +31,8 @@ const ExpendStatistics = () => {
   /** 로그인 session */
   const dispatch = useDispatch()
   const { userInfo, isLoading, error } = useSelector((store) => store.login)
+  /** 지출 총 금액 */
+  const [totalexpense, setTotalExpense] = useState(0)
 
   useEffect(() => {
     search() // 초기화면 * onload
@@ -54,11 +56,12 @@ const ExpendStatistics = () => {
       .then((res) => {
         console.log('pie char succ 성공 ')
         setListExpense(res.data.gagevueListChart)
+        setTotalExpense(res.data.gagevueChartTotal)
 
         /** 지출 라벨 labels */
         const labels = res.data.gagevueListChart.map((item) => item.detail_name)
         /** 지출 금액 amount */
-        const data = res.data.gagevueListChart.map((item) => item.mn_amount)
+        const data = res.data.gagevueListChart.map((item) => item.sum_amount)
 
         /** 차트 배경 색상 랜덤으로 돌리기 chart background */
         const getRandomColor = () => {
@@ -128,6 +131,10 @@ const ExpendStatistics = () => {
       </div>
       <div id='piechartArea'>
         {' '}
+        <br />
+        <span class='intro_section1'>
+          지출 총 합계 : {totalexpense.toLocaleString() + '원'}{' '}
+        </span>
         {chartData && (
           <Doughnut
             data={chartData}
@@ -168,14 +175,16 @@ const ExpendStatistics = () => {
           <thead>
             <tr>
               <th scope='col'>지출항목</th>
-              <th scope='col'>총금액</th>
+              <th scope='col'>금 액</th>
+              <th scope='col'>%</th>
             </tr>
           </thead>
           <tbody>
             {listexpense.map((list, index) => (
               <tr key={index}>
                 <td>{list.detail_name}</td>
-                <td>{list.mn_amount}</td>
+                <td>{list.sum_amount.toLocaleString()}원</td>
+                <td>{list.percentage}%</td>
               </tr>
             ))}
           </tbody>

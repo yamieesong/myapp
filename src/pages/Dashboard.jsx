@@ -14,13 +14,6 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // const loginInfo = sessionStorage.getItem('loginInfo2')
-  // if (loginInfo == null || loginInfo == '') {
-  //   alert('로그인이 필요합니다')
-  //   navigate('/')
-  //   //history.push('/')
-  // }
-
   useEffect(() => {
     console.log('Dashboard userInfo')
     let flag = false
@@ -45,11 +38,8 @@ const Dashboard = () => {
     }
   }, [zustandUserInfo])
 
-  //const [url, setUrl] = useState('')
-  //const [sampletest, setSampletest] = useState('')
-
   let url = ''
-  console.log('userParam', userParam)
+  console.log('userParam!!!', userParam)
   if (userParam) {
     if (userParam.samplePage) {
       url = userParam.samplePage
@@ -73,35 +63,12 @@ const Dashboard = () => {
   console.log('splitLoc[lastArrNum].toLowerCase()', splitLoc[lastArrNum].toLowerCase())
   console.log('url.toLowerCase()', url.toLowerCase())
   console.log('splitLoc[lastArrNum].toLowerCase() === url.toLowerCase()', splitLoc[lastArrNum].toLowerCase() === url.toLowerCase())
-  // alert(splitLoc[lastArrNum])
-  // alert(url)
+
   if (splitLoc[lastArrNum].toLowerCase() === url.toLowerCase()) {
     url = '/' + splitLoc[lastArrNum - 1] + '/' + splitLoc[lastArrNum]
   }
 
   console.log('Dashboard url', url)
-
-  //if (userParam.samplePage) url=userParam.samplePage
-
-  // let sampletest=''
-
-  useLayoutEffect(() => {
-    console.log('Dashboard useEffect start')
-
-    // if (userParam.samplePage === 'samplepage1') {
-    // console.log('samplepage1 start!!!!!!!!!!')
-    //    setSampletest(userParam.samplePage)
-    // }
-
-    /*
-    const loginInfo = sessionStorage.getItem('loginInfo2')
-    if (loginInfo == null || loginInfo == '') {
-      alert('로그인이 필요합니다')
-      navigate('/')
-      //history.push('/')
-    }
-    */
-  }, [])
 
   return (
     <>

@@ -1,0 +1,68 @@
+#menuList > table {
+    border: 1px solid black
+}
+
+#menuList > table > tr {
+    border: 1px solid black
+}
+
+#menuList > table > tr > th {
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: gold;
+    /*width: 100px;*/
+}
+
+#menuList > table > tr > td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: left;
+}
+
+#menuList > p {
+    margin: 5px 0px;
+}
+
+
+#tnUsrMnuAtrt > table {
+    border: 1px solid black
+}
+
+#tnUsrMnuAtrt > table > tr {
+    border: 1px solid black
+}
+
+#tnUsrMnuAtrt > table > tr > th {
+    font-weight: bold;
+    border: 1px solid black;
+    padding: 5px;
+    background-color: gold;
+    width: 100px;
+}
+
+#tnUsrMnuAtrt > table > tr > td {
+    border: 1px solid black;
+    padding: 5px;
+    text-align: left;
+}
+
+#tnUsrMnuAtrt > p {
+    margin: 5px 0px;
+}
+
+#menuListPagination > .pagination {
+    width: 250px;
+    display: flex;
+    font-size: 2em;
+    margin: 10px auto;
+}
+
+#tnUsrMnuAtrtPagination > .pagination {
+    display: flex;
+    font-size: 2em;
+}
+
+.pagination > li {
+    padding: 5px;
+}
